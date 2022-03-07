@@ -8,6 +8,7 @@ export type DrawingConfig = {
     width?: number;
     transition?: string;
     cursor?: Cursor;
+    hoverCursor?: Cursor;
   };
   line?: {
     color?: string;

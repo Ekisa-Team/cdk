@@ -16,7 +16,8 @@ export class SvgDrawContainer {
       hoverSizeMultiplier: 2,
       width: 6,
       transition: 'all ease-out 200ms',
-      cursor: 'pointer',
+      cursor: 'default',
+      hoverCursor: 'pointer',
     },
     line: {
       color: '#fde047',
@@ -44,6 +45,7 @@ export class SvgDrawContainer {
     hoverSizeMultiplier: number;
     transition: string;
     cursor: Cursor;
+    hoverCursor: Cursor;
   }) {
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute('cx', args.cx);
@@ -55,13 +57,19 @@ export class SvgDrawContainer {
 
     // Add circle events
     circle.addEventListener('mouseenter', () => {
-      circle.setAttribute('fill', args.hoverColor);
-      circle.setAttribute('r', (args.width * args.hoverSizeMultiplier).toString());
+      if (this.canRemoveNodes) {
+        circle.setAttribute('fill', args.hoverColor);
+        circle.setAttribute('r', (args.width * args.hoverSizeMultiplier).toString());
+        circle.style.cursor = args.hoverCursor;
+      }
     });
 
     circle.addEventListener('mouseleave', () => {
-      circle.setAttribute('fill', args.color);
-      circle.setAttribute('r', args.width.toString());
+      if (this.canRemoveNodes) {
+        circle.setAttribute('fill', args.color);
+        circle.setAttribute('r', args.width.toString());
+        circle.style.cursor = args.cursor;
+      }
     });
 
     circle.addEventListener('click', (event) => {
@@ -170,7 +178,7 @@ export class SvgDrawContainer {
    * Allow users to delete nodes
    * @returns SvgDraw
    */
-  enableNodeRemoving(): SvgDrawContainer {
+  enableNodesRemoving(): SvgDrawContainer {
     this.canRemoveNodes = true;
     return this;
   }
@@ -179,7 +187,7 @@ export class SvgDrawContainer {
    * Prevent users from removing nodes
    * @returns SvgDraw
    */
-  disableNodeRemoving(): SvgDrawContainer {
+  disableNodesRemoving(): SvgDrawContainer {
     this.canRemoveNodes = false;
     return this;
   }
@@ -269,6 +277,7 @@ export class SvgDrawContainer {
           hoverSizeMultiplier: this.config.circle!.hoverSizeMultiplier!,
           transition: this.config.circle!.transition!,
           cursor: this.config.circle!.cursor!,
+          hoverCursor: this.config.circle!.hoverCursor!,
         };
       });
 
@@ -299,6 +308,7 @@ export class SvgDrawContainer {
         hoverSizeMultiplier: this.config.circle!.hoverSizeMultiplier!,
         transition: this.config.circle!.transition!,
         cursor: this.config.circle!.cursor!,
+        hoverCursor: this.config.circle!.hoverCursor!,
       };
 
       // Connect circles with lines

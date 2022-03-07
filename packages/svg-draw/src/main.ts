@@ -13,7 +13,7 @@ const drawContainer = new SvgDrawContainer()
     },
   })
   .enableDrawingLines()
-  .enableNodeRemoving()
+  .enableNodesRemoving()
   .compile({
     circle: {
       color: '#1d4ed8',
@@ -21,7 +21,8 @@ const drawContainer = new SvgDrawContainer()
       hoverSizeMultiplier: 3,
       width: 6,
       transition: 'all ease-out 200ms',
-      cursor: 'pointer',
+      cursor: 'not-allowed',
+      hoverCursor: 'pointer',
     },
     line: {
       color: '#fde047',
@@ -62,6 +63,11 @@ if (svgNode) {
     drawContainer.loadCoordinates(coordinates);
   };
 
+  const enableDrawingLines = () => drawContainer.enableDrawingLines();
+  const disableDrawingLines = () => drawContainer.disableDrawingLines();
+  const enableNodesRemoving = () => drawContainer.enableNodesRemoving();
+  const disableNodesRemoving = () => drawContainer.disableNodesRemoving();
+
   const buttonsContainer = document.createElement('div');
 
   const clearBtn = document.createElement('button');
@@ -76,9 +82,29 @@ if (svgNode) {
   getCoordsBtn.textContent = 'Get coordinates';
   getCoordsBtn.onclick = getCoordinates;
 
+  const enableDrawBtn = document.createElement('button');
+  enableDrawBtn.textContent = 'Enable drawing lines';
+  enableDrawBtn.onclick = enableDrawingLines;
+
+  const disableDrawBtn = document.createElement('button');
+  disableDrawBtn.textContent = 'Disable drawing lines';
+  disableDrawBtn.onclick = disableDrawingLines;
+
+  const enableRmNodeBtn = document.createElement('button');
+  enableRmNodeBtn.textContent = 'Enable removing nodes';
+  enableRmNodeBtn.onclick = enableNodesRemoving;
+
+  const disableRmNodeBtn = document.createElement('button');
+  disableRmNodeBtn.textContent = 'Disable removing nodes';
+  disableRmNodeBtn.onclick = disableNodesRemoving;
+
   buttonsContainer.append(clearBtn);
   buttonsContainer.append(loadCoordsBtn);
   buttonsContainer.append(getCoordsBtn);
+  buttonsContainer.append(enableDrawBtn);
+  buttonsContainer.append(disableDrawBtn);
+  buttonsContainer.append(enableRmNodeBtn);
+  buttonsContainer.append(disableRmNodeBtn);
 
   app.append(buttonsContainer);
 }
