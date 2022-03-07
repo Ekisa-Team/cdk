@@ -1,0 +1,17 @@
+export type Cursor =
+  | 'auto'
+  | 'crosshair'
+  | 'default'
+  | 'pointer'
+  | 'move'
+  | 'e-resize'
+  | 'ne-resize'
+  | 'nw-resize'
+  | 'n-resize'
+  | 'se-resize'
+  | 'sw-resize'
+  | 's-resize'
+  | 'w-resize'
+  | 'text'
+  | 'wait'
+  | 'help';

@@ -1,6 +1,10 @@
 import { describe, it } from 'vitest';
 
 describe('SvgDrawing', () => {
+  describe('compile', () => {
+    it('should add default config value when is not provided', () => {});
+  });
+
   describe('createSourceFrame', () => {
     /**
      * @vitest-environment happy-dom

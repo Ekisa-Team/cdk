@@ -1,4 +1,6 @@
-import { DrawingStyles } from './types/draw-styles.type';
+import { CircleCoordinate } from './types/circle-coordinate.type';
+import { Cursor } from './types/cursor.type';
+import { DrawingConfig } from './types/draw-config.type';
 
 /**
  * Add dynamic capabilities to SVG elements to draw on images
@@ -7,14 +9,22 @@ export class SvgDraw {
   //#region Attributes
   private drawingElement: HTMLDivElement | null = null;
 
-  private readonly defaultDrawingStyles: DrawingStyles = {
-    circleColor: 'blue',
-    circleWidth: 6,
-    lineColor: 'blue',
-    lineWidth: 2,
+  private readonly defaultConfig: DrawingConfig = {
+    circle: {
+      color: '#1d4ed8',
+      hoverColor: '#e11d48',
+      hoverSizeMultiplier: 2,
+      width: 6,
+      transition: 'all ease-out 200ms',
+      cursor: 'pointer',
+    },
+    line: {
+      color: '#fde047',
+      width: 3,
+    },
   };
 
-  private drawingStyles = JSON.parse(JSON.stringify(this.defaultDrawingStyles)) as DrawingStyles;
+  private config = JSON.parse(JSON.stringify(this.defaultConfig)) as DrawingConfig;
   //#endregion
 
   //#region Constructor
@@ -22,26 +32,75 @@ export class SvgDraw {
   //#endregion
 
   //#region Getters && Setters
-  getCircles(): NodeListOf<SVGCircleElement> | undefined {
+  get circles(): NodeListOf<SVGCircleElement> | undefined {
     return this.drawingElement?.querySelectorAll('svg circle');
   }
 
-  setCircle(circle: SVGCircleElement) {
-    this.drawingElement?.querySelector('svg')?.appendChild(circle);
+  private set circle(args: {
+    cx: string;
+    cy: string;
+    width: number;
+    color: string;
+    hoverColor: string;
+    hoverSizeMultiplier: number;
+    transition: string;
+    cursor: Cursor;
+  }) {
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', args.cx);
+    circle.setAttribute('cy', args.cy);
+    circle.setAttribute('r', args.width.toString());
+    circle.setAttribute('fill', args.color);
+    circle.style.transition = args.transition;
+    circle.style.cursor = args.cursor;
+
+    // Add circle events
+    circle.addEventListener('mouseenter', () => {
+      circle.setAttribute('fill', args.hoverColor);
+      circle.setAttribute('r', (args.width * args.hoverSizeMultiplier).toString());
+    });
+
+    circle.addEventListener('mouseleave', () => {
+      circle.setAttribute('fill', args.color);
+      circle.setAttribute('r', args.width.toString());
+    });
+
+    circle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      circle.remove();
+      this.redraw();
+    });
+
+    this.drawingElement!.querySelector('svg')!.append(circle);
   }
 
-  getLines(): NodeListOf<SVGLineElement> | undefined {
+  get lines(): NodeListOf<SVGLineElement> | undefined {
     return this.drawingElement?.querySelectorAll('svg line');
   }
 
-  setLine(line: SVGLineElement) {
-    this.drawingElement?.querySelector('svg')?.appendChild(line);
+  private set line(args: {
+    x1: string;
+    y1: string;
+    x2: string;
+    y2: string;
+    color: string;
+    width: number;
+  }) {
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', args.x1);
+    line.setAttribute('y1', args.y1);
+    line.setAttribute('x2', args.x2);
+    line.setAttribute('y2', args.y2);
+    line.style.stroke = args.color;
+    line.style.strokeWidth = args.width.toString();
+    this.drawingElement!.querySelector('svg')!.prepend(line);
   }
+
   //#endregion
 
   //#region Public methods
   /**
-   * Creates canvas frame for specified image source
+   * Create frame for specified image source
    * @param src image url
    * @returns SvgDrawing
    */
@@ -89,7 +148,7 @@ export class SvgDraw {
   }
 
   /**
-   * Draws lines on the SVG whenever the user clicks on it
+   * Draw lines on the SVG whenever the user clicks on it
    * @returns SvgDrawing
    */
   addDrawingEvents(): SvgDraw {
@@ -102,29 +161,16 @@ export class SvgDraw {
       const y = clientY - dim.top;
 
       // Draw circles on SVG
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      const { circleWidth, circleColor } = this.drawingStyles;
-
-      circle.setAttribute('cx', x.toString());
-      circle.setAttribute('cy', y.toString());
-      circle.setAttribute('r', circleWidth!.toString());
-      circle.setAttribute('fill', circleColor!.toString());
-      circle.style.transition = 'all ease-in-out 200ms';
-      circle.style.cursor = 'pointer';
-      this.setCircle(circle);
-
-      // Add circle events
-      circle.addEventListener('mouseenter', () =>
-        circle.setAttribute('r', (circleWidth! * 3).toString()),
-      );
-      circle.addEventListener('mouseleave', () =>
-        circle.setAttribute('r', circleWidth!.toString()),
-      );
-      circle.addEventListener('click', (event) => {
-        event.stopPropagation();
-        circle.remove();
-        this.redraw();
-      });
+      this.circle = {
+        cx: x.toString(),
+        cy: y.toString(),
+        width: this.config.circle!.width!,
+        color: this.config.circle!.color!.toString(),
+        hoverColor: this.config.circle!.hoverColor!.toString(),
+        hoverSizeMultiplier: this.config.circle!.hoverSizeMultiplier!,
+        transition: this.config.circle!.transition!,
+        cursor: this.config.circle!.cursor!,
+      };
 
       // Connect circles with lines
       this.redraw();
@@ -134,8 +180,8 @@ export class SvgDraw {
   }
 
   redraw(): void {
-    const circles = this.getCircles();
-    const lines = this.getLines();
+    const circles = this.circles;
+    const lines = this.lines;
 
     lines && lines.forEach((line) => line.remove());
 
@@ -147,19 +193,21 @@ export class SvgDraw {
 
       if (!next) return;
 
+      // Get coordinates for two subsequent dots
       const currentCx = current.attributes.getNamedItem('cx')!;
       const currentCy = current.attributes.getNamedItem('cy')!;
       const nextCx = next.attributes.getNamedItem('cx')!;
       const nextCy = next.attributes.getNamedItem('cy')!;
 
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', currentCx.value);
-      line.setAttribute('y1', currentCy.value);
-      line.setAttribute('x2', nextCx.value);
-      line.setAttribute('y2', nextCy.value);
-      line.style.stroke = 'red';
-      line.style.strokeWidth = '2';
-      this.setLine(line);
+      // Draw line between two subsequent dots
+      this.line = {
+        x1: currentCx.value,
+        y1: currentCy.value,
+        x2: nextCx.value,
+        y2: nextCy.value,
+        color: this.config.line!.color!,
+        width: this.config.line!.width!,
+      };
     }
   }
 
@@ -172,17 +220,71 @@ export class SvgDraw {
   }
 
   /**
-   *
+   * Returns circle coordinates
+   * @returns HTMLElement
    */
-  compile(drawingStyles?: DrawingStyles): SvgDraw {
-    if (!drawingStyles) return this;
+  getCoordinates(): CircleCoordinate[] {
+    const circles = this.circles;
 
-    for (const key in drawingStyles) {
-      const prop: keyof DrawingStyles = key as keyof DrawingStyles;
-      (this.drawingStyles[prop] as any) = drawingStyles[prop] ?? this.defaultDrawingStyles[prop];
-    }
+    if (!circles) return [];
 
+    return [...Array.from(circles)].map((c, i) => ({
+      x: c.cx.baseVal.value,
+      y: c.cy.baseVal.value,
+      order: i,
+    }));
+  }
+
+  /**
+   * Load circle coordinates en redraw lines
+   * @param coordinates circle coordinates
+   */
+  loadCoordinates(coordinates: CircleCoordinate[]): void {
+    coordinates
+      .sort((a, b) => a.order - b.order)
+      .forEach((c) => {
+        this.circle = {
+          cx: c.x.toString(),
+          cy: c.y.toString(),
+          width: this.config.circle!.width!,
+          color: this.config.circle!.color!.toString(),
+          hoverColor: this.config.circle!.hoverColor!.toString(),
+          hoverSizeMultiplier: this.config.circle!.hoverSizeMultiplier!,
+          transition: this.config.circle!.transition!,
+          cursor: this.config.circle!.cursor!,
+        };
+      });
+  }
+
+  /**
+   * Compile drawing configuration on demand
+   * @param config config schema for drawing elements
+   * @returns SvgDraw
+   */
+  compile(config?: DrawingConfig): SvgDraw {
+    if (!config) return this;
+    this.processConfiguration(config);
     return this;
+  }
+
+  //#endregion
+
+  //#region Private methods
+  /**
+   * Recursively populate global configuration object
+   * @param config parent or child config object
+   * @param path parent object key
+   */
+  private processConfiguration(config?: any, path = '') {
+    for (let k in config) {
+      const val = config[k];
+
+      if (val && typeof val === 'object' && !Array.isArray(val)) {
+        this.processConfiguration(val, k);
+      } else {
+        (this.config as any)[path][k] = val;
+      }
+    }
   }
   //#endregion
 }

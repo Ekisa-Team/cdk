@@ -8,14 +8,24 @@ const draw = new SvgDraw()
       objectFit: 'fill',
     },
     style: {
-      width: '1000px',
-      heigth: '800px',
+      width: '600px',
+      heigth: '400px',
     },
   })
   .addDrawingEvents()
   .compile({
-    circleColor: 'blue',
-    circleWidth: 3,
+    circle: {
+      color: '#1d4ed8',
+      hoverColor: '#e11d48',
+      hoverSizeMultiplier: 6,
+      width: 6,
+      transition: 'all ease-out 200ms',
+      cursor: 'pointer',
+    },
+    line: {
+      color: '#fde047',
+      width: 3,
+    },
   });
 
 const svgNode = draw.getNode();
