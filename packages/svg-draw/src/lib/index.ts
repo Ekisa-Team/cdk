@@ -1,1 +1,1 @@
-export { SvgDraw } from './svg-draw';
+export { SvgDrawContainer } from './svg-draw-container';
