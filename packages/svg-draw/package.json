@@ -1,0 +1,36 @@
+{
+  "name": "@quiron/svg-draw",
+  "version": "0.0.0",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/svg-draw.umd.js",
+  "module": "./dist/svg-draw.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/svg-draw.es.js",
+      "require": "./dist/svg-draw.umd.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ekisa-Team/quiron-lib/tree/main/packages/svg-draw"
+  },
+  "bugs": {
+    "url": "https://github.com/Ekisa-Team/quiron-lib/issues"
+  },
+  "homepage": "https://github.com/Ekisa-Team/quiron-lib/tree/main/packages/svg-draw",
+  "keywords": [
+    "Quiron",
+    "Drawing"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^2.8.0"
+  }
+}
