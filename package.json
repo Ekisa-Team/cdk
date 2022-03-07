@@ -8,9 +8,9 @@
   ],
   "main": "index.js",
   "scripts": {
-    "dev:svg-drawing": "npm run dev --workspace=packages/svg-drawing",
-    "build:svg-drawing": "npm run build --workspace=packages/svg-drawing",
-    "preview:svg-drawing": "npm run preview --workspace=packages/svg-drawing",
+    "dev:svg-draw": "npm run dev --workspace=packages/svg-draw",
+    "build:svg-draw": "npm run build --workspace=packages/svg-draw",
+    "preview:svg-draw": "npm run preview --workspace=packages/svg-draw",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
