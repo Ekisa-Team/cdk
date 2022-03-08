@@ -14,7 +14,9 @@ class MockGraphDrawing extends GraphDrawing {
     throw new Error('Method not implemented.');
   }
 
-  redraw(): void {}
+  redraw(): void {
+    console.log('redraw');
+  }
 }
 
 describe('GraphDrawing', () => {

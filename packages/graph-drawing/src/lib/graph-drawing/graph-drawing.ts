@@ -69,7 +69,7 @@ export abstract class GraphDrawing extends GraphDrawingBehavior {
       }
     });
 
-    this.containerElement.querySelector('svg')!.append(circle);
+    this.containerElement.querySelector('svg')?.append(circle);
   }
 
   protected get lines(): NodeListOf<SVGLineElement> | undefined {
@@ -196,10 +196,10 @@ export abstract class GraphDrawing extends GraphDrawingBehavior {
     for (const k of Object.keys(updates)) {
       const prop = k as keyof GraphDrawingConfig;
 
-      if (!config.hasOwnProperty(k) || typeof updates[prop] !== 'object') {
-        (config[prop] as any) = updates[prop];
+      if (!Object.prototype.hasOwnProperty.call(config, k) || typeof updates[prop] !== 'object') {
+        (config[prop] as unknown) = updates[prop];
       } else {
-        this.mergeConfig(config[prop] as any, updates[prop] as any);
+        this.mergeConfig(config[prop] as never, updates[prop] as never);
       }
     }
 
