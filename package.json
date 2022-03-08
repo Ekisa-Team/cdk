@@ -1,5 +1,5 @@
 {
-  "name": "quiron-lib",
+  "name": "ekisa-cdk",
   "private": true,
   "version": "1.0.0",
   "description": "",
@@ -8,9 +8,9 @@
   ],
   "main": "index.js",
   "scripts": {
-    "dev:svg-draw": "npm run dev --workspace=packages/svg-draw",
-    "build:svg-draw": "npm run build --workspace=packages/svg-draw",
-    "preview:svg-draw": "npm run preview --workspace=packages/svg-draw",
+    "dev:graph-drawing": "npm run dev --workspace=packages/graph-drawing",
+    "build:graph-drawing": "npm run build --workspace=packages/graph-drawing",
+    "preview:graph-drawing": "npm run preview --workspace=packages/graph-drawing",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
