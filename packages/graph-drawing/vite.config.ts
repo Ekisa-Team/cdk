@@ -15,5 +15,5 @@ export default defineConfig({
       fileName: 'graph-drawing',
     },
   },
-  plugins: [dts({ copyDtsFiles: false })],
+  plugins: [dts()],
 });
