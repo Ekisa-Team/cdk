@@ -66,8 +66,7 @@ export class LineGraphDrawing extends GraphDrawing {
       const x = clientX - dim.left;
       const y = clientY - dim.top;
 
-      // Draw circles on SVG
-
+      // Draw node on SVG
       this.node = {
         cx: x.toString(),
         cy: y.toString(),
