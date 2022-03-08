@@ -1,10 +1,17 @@
-import { SvgDrawContainer } from './lib/svg-draw-container';
+/**
+ * This file is just for testing purposes
+ */
 
-const drawContainer = new SvgDrawContainer()
-  .createSourceFrame({
+import { LineGraphDrawing } from './lib/line-graph/line-graph-drawing';
+
+const graph = new LineGraphDrawing({
+  canDrawLines: true,
+  canRemoveNodes: true,
+})
+  .mountScopedFrame({
     image: {
-      src: 'https://theanimaldentalclinic.com/wp-content/uploads/2019/01/shutterstock_1048325251.jpg',
-      alt: 'Pacient teeth',
+      src: 'https://d20khd7ddkh5ls.cloudfront.net/point_2.jpg',
+      alt: 'Cartesian coordinate plane',
       objectFit: 'fill',
     },
     style: {
@@ -12,40 +19,23 @@ const drawContainer = new SvgDrawContainer()
       heigth: '400px',
     },
   })
-  .enableDrawingLines()
-  .enableNodesRemoving()
-  .compile({
-    circle: {
-      color: '#1d4ed8',
-      hoverColor: '#e11d48',
-      hoverSizeMultiplier: 3,
-      width: 6,
-      transition: 'all ease-out 200ms',
-      cursor: 'not-allowed',
-      hoverCursor: 'pointer',
-    },
-    line: {
-      color: '#fde047',
-      width: 3,
-    },
-  })
-  .start();
+  .startProcess();
 
-const svgNode = drawContainer.getElement();
+const container = graph.getContainerElement();
 
-if (svgNode) {
+if (container) {
   const app = document.querySelector('#app')!;
-  app.appendChild(svgNode);
+  app.append(container);
 
   const clearNodes = () => {
-    drawContainer.getNodes().forEach((node) => {
+    graph.getNodes().forEach((node) => {
       node.remove();
-      drawContainer.redraw();
+      graph.redraw();
     });
   };
 
   const getCoordinates = () => {
-    const coordinates = drawContainer.getCoordinates();
+    const coordinates = graph.getCoordinates();
     console.log(coordinates);
     alert('Check the console');
   };
@@ -60,13 +50,13 @@ if (svgNode) {
       { x: 99, y: 156, order: 5 },
     ];
 
-    drawContainer.loadCoordinates(coordinates);
+    graph.loadCoordinates(coordinates);
   };
 
-  const enableDrawingLines = () => drawContainer.enableDrawingLines();
-  const disableDrawingLines = () => drawContainer.disableDrawingLines();
-  const enableNodesRemoving = () => drawContainer.enableNodesRemoving();
-  const disableNodesRemoving = () => drawContainer.disableNodesRemoving();
+  const enableDrawingLines = () => graph.enableLinesDrawing();
+  const disableDrawingLines = () => graph.disableLinesDrawing();
+  const enableNodesRemoving = () => graph.enableNodesRemoval();
+  const disableNodesRemoving = () => graph.disableNodesRemoval();
 
   const buttonsContainer = document.createElement('div');
 

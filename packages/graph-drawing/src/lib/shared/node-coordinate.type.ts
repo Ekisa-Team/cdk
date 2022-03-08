@@ -1,4 +1,4 @@
-export type CircleCoordinate = {
+export type NodeCoordinate = {
   x: number;
   y: number;
   order: number;

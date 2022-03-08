@@ -9,7 +9,7 @@ export default defineConfig({
     target: 'esnext',
     lib: {
       entry: path.resolve(__dirname, 'src/lib/index.ts'),
-      name: '@quiron/svg-draw',
+      name: '@ekisa-cdk/graph-drawing',
     },
   },
 });
