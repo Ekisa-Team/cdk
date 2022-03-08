@@ -8,6 +8,7 @@
   ],
   "main": "index.js",
   "scripts": {
+    "postinstall": "npx husky install",
     "dev:graph-drawing": "npm run dev --workspace=packages/graph-drawing",
     "build:graph-drawing": "npm run build --workspace=packages/graph-drawing",
     "preview:graph-drawing": "npm run preview --workspace=packages/graph-drawing",
