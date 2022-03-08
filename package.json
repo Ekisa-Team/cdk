@@ -8,14 +8,18 @@
   ],
   "main": "index.js",
   "scripts": {
-    "postinstall": "npx husky install",
+    "prepare": "husky install",
     "dev:graph-drawing": "npm run dev --workspace=packages/graph-drawing",
     "build:graph-drawing": "npm run build --workspace=packages/graph-drawing",
     "preview:graph-drawing": "npm run preview --workspace=packages/graph-drawing",
     "test": "vitest",
+    "test:run": "vitest run",
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
+  },
+  "lint-staged": {
+    "*.ts": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +33,8 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "happy-dom": "^2.45.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.5",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4",
     "vitest": "^0.5.9"
