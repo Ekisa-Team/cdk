@@ -2,7 +2,7 @@
  * This file is just for testing purposes
  */
 
-import { LineGraphDrawing } from './lib/line/line-graph-drawing';
+import { LineGraphDrawing } from './lib/line-graph/line-graph-drawing';
 
 const graph = new LineGraphDrawing({
   canDrawLines: true,

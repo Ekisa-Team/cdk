@@ -1,1 +1,1 @@
-export { LineGraphDrawing } from './line/line-graph-drawing';
+export { LineGraphDrawing } from './line-graph/line-graph-drawing';
