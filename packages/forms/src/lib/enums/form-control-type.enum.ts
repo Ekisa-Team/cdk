@@ -1,4 +1,5 @@
 export enum FormControlType {
+  FieldSet = 'FieldSet',
   TextBox = 'Textbox',
   TextArea = 'Textarea',
   NumberBox = 'Numberbox',

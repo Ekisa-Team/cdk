@@ -1,5 +1,6 @@
 export * from './check-box';
 export * from './date-picker';
+export * from './field-set';
 export * from './number-box';
 export * from './radio-group';
 export * from './select-box';

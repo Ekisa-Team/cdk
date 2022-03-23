@@ -1,6 +1,7 @@
 import {
   CheckBox,
   DatePicker,
+  FieldSet,
   NumberBox,
   RadioGroup,
   SelectBox,
@@ -10,6 +11,7 @@ import {
 } from '../controls';
 
 export type FormControl =
+  | FieldSet
   | TextBox
   | TextArea
   | NumberBox

@@ -1,6 +1,7 @@
 import {
   CheckBox,
   DatePicker,
+  FieldSet,
   Form,
   FormControls,
   NumberBox,
@@ -22,6 +23,21 @@ const formData: FormControls = [
   new RadioGroup(),
   new DatePicker(),
   new TimePicker(),
+  new FieldSet({
+    legend: 'Address information',
+    children: [
+      new TextBox(),
+      new FieldSet({
+        legend: 'Nested fieldset',
+        children: [
+          new FieldSet({
+            legend: 'Another nested fieldset',
+            children: [new CheckBox(), new CheckBox()],
+          }),
+        ],
+      }),
+    ],
+  }),
 ];
 
 const form = new Form({ dataSource: formData });

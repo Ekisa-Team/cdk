@@ -1,6 +1,7 @@
 import {
   CheckBox,
   DatePicker,
+  FieldSet,
   NumberBox,
   RadioGroup,
   SelectBox,
@@ -56,39 +57,94 @@ const renderTimePicker = (config: TimePicker): HTMLInputElement => {
   return input;
 };
 
-const renderFieldset = (): HTMLFieldSetElement => {
+const renderWrapper = (): HTMLDivElement => {
+  const div = document.createElement('div');
+  return div;
+};
+
+const renderFieldSet = (config: FieldSet): HTMLFieldSetElement => {
   const fieldset = document.createElement('fieldset');
+
+  if (config.legend) {
+    const legend = document.createElement('legend');
+    legend.textContent = config.legend;
+    fieldset.append(legend);
+  }
+
+  if (config.children.length) {
+    render<HTMLFieldSetElement>(fieldset, config.children);
+  }
+
   return fieldset;
 };
 
 const renderForm = (controls: FormControls): HTMLFormElement => {
   const form = document.createElement('form');
+  return render<HTMLFormElement>(form, controls);
+};
 
+function render<T extends HTMLElement>(target: T, controls: FormControls): T {
   for (const control of controls) {
+    console.log(control);
     switch (control.type) {
+      case FormControlType.FieldSet:
+        target.append(renderFieldSet(control as FieldSet));
+        break;
       case FormControlType.TextBox:
-        form.append(renderTextBox(control as TextBox));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderTextBox(control as TextBox));
+          target.append(wrapper);
+        }
         break;
       case FormControlType.TextArea:
-        form.append(renderTextArea(control as TextArea));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderTextArea(control as TextArea));
+          target.append(wrapper);
+        }
         break;
       case FormControlType.NumberBox:
-        form.append(renderNumberBox(control as NumberBox));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderNumberBox(control as NumberBox));
+          target.append(wrapper);
+        }
         break;
       case FormControlType.SelectBox:
-        form.append(renderSelectBox(control as SelectBox));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderSelectBox(control as SelectBox));
+          target.append(wrapper);
+        }
         break;
       case FormControlType.CheckBox:
-        form.append(renderCheckBox(control as CheckBox));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderCheckBox(control as CheckBox));
+          target.append(wrapper);
+        }
         break;
       case FormControlType.RadioGroup:
-        form.append(renderRadioGroup(control as RadioGroup));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderRadioGroup(control as RadioGroup));
+          target.append(wrapper);
+        }
         break;
       case FormControlType.DatePicker:
-        form.append(renderDatePicker(control as DatePicker));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderDatePicker(control as DatePicker));
+          target.append(wrapper);
+        }
         break;
       case FormControlType.TimePicker:
-        form.append(renderTimePicker(control as TimePicker));
+        {
+          const wrapper = renderWrapper();
+          wrapper.append(renderTimePicker(control as TimePicker));
+          target.append(wrapper);
+        }
         break;
       default:
         console.log(control);
@@ -96,8 +152,8 @@ const renderForm = (controls: FormControls): HTMLFormElement => {
     }
   }
 
-  return form;
-};
+  return target;
+}
 
 export default {
   renderTextBox,
@@ -108,6 +164,6 @@ export default {
   renderRadioGroup,
   renderDatePicker,
   renderTimePicker,
-  renderFieldset,
+  renderFieldSet,
   renderForm,
 };

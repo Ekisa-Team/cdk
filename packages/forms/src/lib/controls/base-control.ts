@@ -1,9 +1,9 @@
 import { FormControlType } from '../enums/form-control-type.enum';
 
 export class BaseControl<ValueType> {
+  type: FormControlType | undefined;
   value: ValueType | undefined;
   order: number;
-  type: FormControlType | undefined;
 
   constructor(options: { value?: ValueType; order?: number; type?: FormControlType } = {}) {
     this.value = options.value;
