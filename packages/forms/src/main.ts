@@ -1,8 +1,28 @@
-import './style.css';
+import {
+  CheckBox,
+  DatePicker,
+  Form,
+  FormControls,
+  NumberBox,
+  RadioGroup,
+  SelectBox,
+  TextArea,
+  TextBox,
+  TimePicker,
+} from './lib';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
-app.innerHTML = `
-  <h1>Hello Vite!</h1>
-  <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
-`;
+const formData: FormControls = [
+  new TextBox(),
+  new TextArea(),
+  new NumberBox(),
+  new SelectBox(),
+  new CheckBox(),
+  new RadioGroup(),
+  new DatePicker(),
+  new TimePicker(),
+];
+
+const form = new Form({ dataSource: formData });
+form.render(app);

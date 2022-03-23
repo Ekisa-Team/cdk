@@ -1,3 +1,6 @@
-import { AbstractControl } from './abstract-control';
+import { FormControlType } from '../enums/form-control-type.enum';
+import { BaseControl } from './base-control';
 
-export class NumberBox extends AbstractControl {}
+export class NumberBox extends BaseControl<number> {
+  override type = FormControlType.NumberBox;
+}
