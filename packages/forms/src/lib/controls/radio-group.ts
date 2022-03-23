@@ -8,12 +8,12 @@ export type RadioGroupItem = {
 
 export class RadioGroup extends BaseControl<string> {
   override type = FormControlType.RadioGroup;
-  title: string | undefined;
+  text: string | undefined;
   items: RadioGroupItem[] = [];
 
-  constructor(name: string, options: { title?: string; items: RadioGroupItem[] } = { items: [] }) {
+  constructor(name: string, options: { text?: string; items: RadioGroupItem[] } = { items: [] }) {
     super(name);
-    this.title = options.title;
+    this.text = options.text;
     this.items = options.items;
   }
 }

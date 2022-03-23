@@ -38,16 +38,14 @@ const formData: FormControls = [
   }),
   new CheckBox('aceptaCorreos', { label: 'Quiero que me envíen correos' }),
   new CheckBox('aceptaTerminos', { label: 'Acepto el tratamiento de datos' }),
-
   new RadioGroup('colorFavorito', {
-    title: 'Escoja su color favorito',
+    text: 'Escoja su color favorito',
     items: [
       { label: 'Amarillo', value: 'yellow' },
       { label: 'Azul', value: 'blue' },
       { label: 'Rojo', value: 'red' },
     ],
   }),
-
   new TextArea('observaciones', {
     label: 'Observaciones',
     placeholder: 'Lista de items que se desarrollarán en la actividad',

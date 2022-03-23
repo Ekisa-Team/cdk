@@ -8,13 +8,14 @@ import {
   TextArea,
   TextBox,
   TimePicker,
-} from '../controls';
-import { FormControlType } from '../enums/form-control-type.enum';
-import { FormControls } from '../types/form-control.type';
+} from './controls';
+import { FormControlType } from './enums/form-control-type.enum';
+import { FormControls } from './types/form-control.type';
 
 const renderTextBox = (config: TextBox): HTMLInputElement => {
   const input = document.createElement('input');
   input.type = 'text';
+  input.id = config.name;
   input.name = config.name;
   input.placeholder = config.placeholder ?? '';
 
@@ -23,6 +24,7 @@ const renderTextBox = (config: TextBox): HTMLInputElement => {
 
 const renderTextArea = (config: TextArea): HTMLTextAreaElement => {
   const textarea = document.createElement('textarea');
+  textarea.id = config.name;
   textarea.name = config.name;
   textarea.placeholder = config.placeholder ?? '';
 
@@ -39,6 +41,7 @@ const renderTextArea = (config: TextArea): HTMLTextAreaElement => {
 
 const renderNumberBox = (config: NumberBox): HTMLInputElement => {
   const input = document.createElement('input');
+  input.id = config.name;
   input.name = config.name;
   input.type = 'number';
 
@@ -55,6 +58,7 @@ const renderNumberBox = (config: NumberBox): HTMLInputElement => {
 
 const renderSelectBox = (config: SelectBox): HTMLSelectElement => {
   const select = document.createElement('select');
+  select.id = config.name;
   select.name = config.name;
 
   for (const opt of config.options) {
@@ -69,6 +73,7 @@ const renderSelectBox = (config: SelectBox): HTMLSelectElement => {
 
 const renderCheckBox = (config: CheckBox): HTMLInputElement => {
   const input = document.createElement('input');
+  input.id = config.name;
   input.name = config.name;
   input.type = 'checkbox';
   return input;
@@ -77,20 +82,24 @@ const renderCheckBox = (config: CheckBox): HTMLInputElement => {
 const renderRadioGroup = (config: RadioGroup): HTMLDivElement => {
   const wrapper = document.createElement('div');
 
-  if (config.title) {
+  if (config.text) {
     const p = document.createElement('p');
-    p.textContent = config.title;
+    p.textContent = config.text;
     wrapper.append(p);
   }
 
-  for (const item of config.items) {
+  for (let i = 0; i < config.items.length; i++) {
+    const item = config.items[i];
+    const id = config.name + i;
+
     const input = document.createElement('input');
     input.type = 'radio';
+    input.id = id;
     input.name = config.name;
     input.value = item.value;
     wrapper.append(input);
 
-    const label = renderLabel(item.label, '');
+    const label = renderLabel(item.label, id);
     wrapper.append(label);
   }
 
@@ -99,6 +108,7 @@ const renderRadioGroup = (config: RadioGroup): HTMLDivElement => {
 
 const renderDatePicker = (config: DatePicker): HTMLInputElement => {
   const input = document.createElement('input');
+  input.id = config.name;
   input.name = config.name;
   input.type = 'date';
   return input;
@@ -106,6 +116,7 @@ const renderDatePicker = (config: DatePicker): HTMLInputElement => {
 
 const renderTimePicker = (config: TimePicker): HTMLInputElement => {
   const input = document.createElement('input');
+  input.id = config.name;
   input.name = config.name;
   input.type = 'time';
   return input;
@@ -149,7 +160,7 @@ function render<T extends HTMLElement>(target: T, controls: FormControls): T {
     const wrapper = renderWrapper();
 
     if (control.label) {
-      const label = renderLabel(control.label, '');
+      const label = renderLabel(control.label, control.name);
       wrapper.append(label);
     }
 

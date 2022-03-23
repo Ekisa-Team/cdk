@@ -1,7 +1,7 @@
 import { AbstractForm } from './abstract-form';
+import renderUtils from './renderer';
 import { FormControls } from './types/form-control.type';
 import { FormPersistenceEvent, FormPersistenceType } from './types/form-persistence.type';
-import renderUtils from './utils/render.utils';
 
 export class Form extends AbstractForm {
   /** List of dynamically configured form controls */
