@@ -7,9 +7,6 @@ export class Form extends AbstractForm {
   /** List of dynamically configured form controls */
   dataSource!: FormControls;
 
-  /** Customizable options to style the form */
-  theme!: any;
-
   formColumns!: number;
 
   /** Control status  */
@@ -38,7 +35,6 @@ export class Form extends AbstractForm {
 
   constructor(args: {
     dataSource: FormControls;
-    theme?: any;
     columns?: number;
     readonly?: boolean;
     disabled?: boolean;
@@ -46,7 +42,6 @@ export class Form extends AbstractForm {
     super();
 
     this.dataSource = args.dataSource;
-    this.theme = args.theme;
     this.formColumns = args.columns ?? 1;
     this.isReadonly = args.readonly ?? false;
     this.isDisabled = args.disabled ?? false;
