@@ -25,5 +25,5 @@ export abstract class AbstractForm {
   /**
    * Convert controls values to JSON format
    */
-  abstract toJson(): boolean;
+  abstract toJSON<T>(): T;
 }

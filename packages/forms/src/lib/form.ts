@@ -34,6 +34,8 @@ export class Form extends AbstractForm {
     this._isDisabled = status;
   }
 
+  _form!: HTMLFormElement;
+
   constructor(args: {
     dataSource: FormControls;
     theme?: any;
@@ -53,6 +55,7 @@ export class Form extends AbstractForm {
   override render(parent: HTMLBodyElement | HTMLDivElement): void {
     const form = renderUtils.renderForm(this.dataSource);
     parent.append(form);
+    this._form = form;
   }
 
   override reset(): void {
@@ -67,7 +70,9 @@ export class Form extends AbstractForm {
     throw new Error('Method not implemented.');
   }
 
-  override toJson(): boolean {
-    throw new Error('Method not implemented.');
+  override toJSON<T>(): T {
+    const formData = new FormData(this._form);
+    const formProps = Object.fromEntries(formData);
+    return formProps as Record<string, unknown> as T;
   }
 }

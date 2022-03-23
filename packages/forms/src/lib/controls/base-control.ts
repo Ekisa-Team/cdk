@@ -1,12 +1,19 @@
 import { FormControlType } from '../enums/form-control-type.enum';
 
-export class BaseControl<ValueType> {
+export abstract class BaseControl<ValueType> {
+  name: string;
   type: FormControlType | undefined;
+  label: string | undefined;
   value: ValueType | undefined;
   order: number;
 
-  constructor(options: { value?: ValueType; order?: number; type?: FormControlType } = {}) {
+  constructor(
+    name: string,
+    options: { value?: ValueType; label?: string; order?: number; type?: FormControlType } = {},
+  ) {
+    this.name = name;
     this.value = options.value;
+    this.label = options.label;
     this.order = options.order ?? 1;
     this.type = options.type;
   }
