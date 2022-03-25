@@ -1,4 +1,6 @@
 import { AbstractForm } from './abstract-form';
+import { FieldSet } from './controls';
+import { FormControlType } from './enums/form-control-type.enum';
 import renderUtils from './renderer';
 import { FormControls } from './types/form-control.type';
 import { FormPersistenceEvent, FormPersistenceType } from './types/form-persistence.type';
@@ -66,8 +68,28 @@ export class Form extends AbstractForm {
   }
 
   override toJSON<T>(): T {
-    const formData = new FormData(this._form);
-    const formProps = Object.fromEntries(formData);
-    return formProps as Record<string, unknown> as T;
+    const keyValuePairs: Array<[string, unknown]> = this.getKeyValuePairs(this.dataSource);
+    const formData: Record<string, unknown> = {};
+
+    keyValuePairs.forEach(([key, value]) => {
+      formData[key] = value;
+    });
+
+    return formData as Record<string, unknown> as T;
+  }
+
+  private getKeyValuePairs(controls: FormControls): Array<[string, unknown]> {
+    let result: Array<[string, unknown]> = [];
+
+    for (const c of controls) {
+      if (c.type === FormControlType.FieldSet) {
+        const children = (c as unknown as FieldSet).children;
+        result = [...result, ...this.getKeyValuePairs(children)];
+      } else {
+        result.push([c.key, c.getValue()]);
+      }
+    }
+
+    return result;
   }
 }

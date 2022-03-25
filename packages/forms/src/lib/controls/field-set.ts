@@ -8,7 +8,7 @@ export class FieldSet extends BaseControl<void> {
   children: FormControls = [];
 
   constructor(options: { legend?: string; children?: FormControls } = {}) {
-    super('');
+    super();
     this.legend = options.legend;
     this.children = options.children || [];
   }

@@ -3,11 +3,18 @@ import { BaseControl } from './base-control';
 
 export class TextBox extends BaseControl<string> {
   override type = FormControlType.TextBox;
+  override key: string;
+  override value: string | null;
   override label: string | undefined;
   placeholder: string | undefined;
 
-  constructor(name: string, options: { label?: string; placeholder?: string } = {}) {
-    super(name);
+  constructor(
+    value: string | null,
+    options: { key: string; label?: string; placeholder?: string } = { key: '' },
+  ) {
+    super(value, options);
+    this.value = value;
+    this.key = options.key;
     this.label = options.label;
     this.placeholder = options.placeholder;
   }

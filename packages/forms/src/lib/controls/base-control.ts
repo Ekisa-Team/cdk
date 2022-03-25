@@ -1,20 +1,30 @@
 import { FormControlType } from '../enums/form-control-type.enum';
 
 export abstract class BaseControl<ValueType> {
-  name: string;
-  type: FormControlType | undefined;
+  value: ValueType | null;
+  key: string;
   label: string | undefined;
-  value: ValueType | undefined;
   order: number;
+  type: FormControlType | undefined;
 
   constructor(
-    name: string,
-    options: { value?: ValueType; label?: string; order?: number; type?: FormControlType } = {},
+    value: ValueType | null,
+    options: {
+      key: string;
+      label?: string;
+      order?: number;
+      type?: FormControlType;
+    } = { key: '' },
   ) {
-    this.name = name;
-    this.value = options.value;
+    this.value = value;
+    this.key = options.key;
     this.label = options.label;
     this.order = options.order ?? 1;
     this.type = options.type;
+  }
+
+  getValue(): ValueType | null {
+    const node = document.querySelector(`#${this.key}`);
+    return (node as any)?.value.trim() || null;
   }
 }

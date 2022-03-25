@@ -15,18 +15,20 @@ import { FormControls } from './types/form-control.type';
 const renderTextBox = (config: TextBox): HTMLInputElement => {
   const input = document.createElement('input');
   input.type = 'text';
-  input.id = config.name;
-  input.name = config.name;
+  input.id = config.key;
+  input.name = config.key;
   input.placeholder = config.placeholder ?? '';
+  input.value = config.value ?? '';
 
   return input;
 };
 
 const renderTextArea = (config: TextArea): HTMLTextAreaElement => {
   const textarea = document.createElement('textarea');
-  textarea.id = config.name;
-  textarea.name = config.name;
+  textarea.id = config.key;
+  textarea.name = config.key;
   textarea.placeholder = config.placeholder ?? '';
+  textarea.value = config.value ?? '';
 
   if (config.cols) {
     textarea.cols = config.cols;
@@ -41,9 +43,13 @@ const renderTextArea = (config: TextArea): HTMLTextAreaElement => {
 
 const renderNumberBox = (config: NumberBox): HTMLInputElement => {
   const input = document.createElement('input');
-  input.id = config.name;
-  input.name = config.name;
+  input.id = config.key;
+  input.name = config.key;
   input.type = 'number';
+
+  if (config.value !== undefined && config.value !== null) {
+    input.valueAsNumber = config.value;
+  }
 
   if (config.min !== undefined) {
     input.min = config.min.toString();
@@ -58,8 +64,8 @@ const renderNumberBox = (config: NumberBox): HTMLInputElement => {
 
 const renderSelectBox = (config: SelectBox): HTMLSelectElement => {
   const select = document.createElement('select');
-  select.id = config.name;
-  select.name = config.name;
+  select.id = config.key;
+  select.name = config.key;
 
   for (const opt of config.options) {
     const option = document.createElement('option');
@@ -68,14 +74,19 @@ const renderSelectBox = (config: SelectBox): HTMLSelectElement => {
     select.append(option);
   }
 
+  if (config.value) {
+    select.value = config.value;
+  }
+
   return select;
 };
 
 const renderCheckBox = (config: CheckBox): HTMLInputElement => {
   const input = document.createElement('input');
-  input.id = config.name;
-  input.name = config.name;
+  input.id = config.key;
+  input.name = config.key;
   input.type = 'checkbox';
+  input.checked = config.value ?? false;
   return input;
 };
 
@@ -90,12 +101,12 @@ const renderRadioGroup = (config: RadioGroup): HTMLDivElement => {
 
   for (let i = 0; i < config.items.length; i++) {
     const item = config.items[i];
-    const id = config.name + i;
+    const id = config.key + i;
 
     const input = document.createElement('input');
     input.type = 'radio';
     input.id = id;
-    input.name = config.name;
+    input.name = config.key;
     input.value = item.value;
     wrapper.append(input);
 
@@ -103,22 +114,36 @@ const renderRadioGroup = (config: RadioGroup): HTMLDivElement => {
     wrapper.append(label);
   }
 
+  if (config.value) {
+    // Search node inside wrapper element
+    const node = Array.from<HTMLInputElement>(
+      wrapper.querySelectorAll(`[name=${config.key}]`),
+    )?.find((node) => node.value === config.value) as HTMLInputElement | null;
+
+    // Set node value if it's found
+    if (node) {
+      node.checked = true;
+    }
+  }
+
   return wrapper;
 };
 
 const renderDatePicker = (config: DatePicker): HTMLInputElement => {
   const input = document.createElement('input');
-  input.id = config.name;
-  input.name = config.name;
+  input.id = config.key;
+  input.name = config.key;
   input.type = 'date';
+  input.valueAsDate = config.value;
   return input;
 };
 
 const renderTimePicker = (config: TimePicker): HTMLInputElement => {
   const input = document.createElement('input');
-  input.id = config.name;
-  input.name = config.name;
+  input.id = config.key;
+  input.name = config.key;
   input.type = 'time';
+  input.valueAsDate = config.value;
   return input;
 };
 
@@ -160,7 +185,7 @@ function render<T extends HTMLElement>(target: T, controls: FormControls): T {
     const wrapper = renderWrapper();
 
     if (control.label) {
-      const label = renderLabel(control.label, control.name);
+      const label = renderLabel(control.label, control.key);
       wrapper.append(label);
     }
 

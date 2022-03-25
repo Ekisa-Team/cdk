@@ -9,11 +9,18 @@ export type SelectBoxOption = {
 
 export class SelectBox extends BaseControl<string> {
   override type = FormControlType.SelectBox;
+  override key: string;
+  override value: string | null;
   override label: string | undefined;
   options: SelectBoxOption[] = [];
 
-  constructor(name: string, options: { label?: string; options?: SelectBoxOption[] } = {}) {
-    super(name);
+  constructor(
+    value: string | null,
+    options: { key: string; label?: string; options?: SelectBoxOption[] } = { key: '' },
+  ) {
+    super(value, options);
+    this.value = value;
+    this.key = options.key;
     this.label = options.label;
     this.options = options.options || [];
   }
