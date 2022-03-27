@@ -40,6 +40,16 @@ export class ValidationsPlugin implements FormPlugin<ValidationOutput, Validatio
           errorMessage.textContent = `Invalid email`;
           errorsWrapper.append(errorMessage);
         }
+        if (error.min) {
+          const errorMessage = document.createElement(this._childElement) as HTMLParagraphElement;
+          errorMessage.textContent = `Min: ${error.min.min}, Current: ${error.min.current}`;
+          errorsWrapper.append(errorMessage);
+        }
+        if (error.max) {
+          const errorMessage = document.createElement(this._childElement) as HTMLParagraphElement;
+          errorMessage.textContent = `Max: ${error.max.max}, Current: ${error.max.current}`;
+          errorsWrapper.append(errorMessage);
+        }
         if (error.minLength) {
           const errorMessage = document.createElement(this._childElement) as HTMLParagraphElement;
           errorMessage.textContent = `Min length: ${error.minLength.requiredLength}, Current length: ${error.minLength.currentLength}`;
