@@ -1,17 +1,25 @@
 import { FormControlType } from '../enums/form-control-type.enum';
-import { BaseControl } from './base-control';
+import { ValidatorFn } from '../validators';
+import { AbstractControl } from './abstract-control';
 
-export class NumberBox extends BaseControl<number> {
+export class NumberBox extends AbstractControl {
   override type = FormControlType.NumberBox;
   override key: string;
   override value: number | null;
   override label: string | undefined;
+  override validators: ValidatorFn[];
   min: number | undefined;
   max: number | undefined;
 
   constructor(
     value: number | null,
-    options: { key: string; label?: string; min?: number; max?: number; placeholder?: string } = {
+    options: {
+      key: string;
+      label?: string;
+      validators?: ValidatorFn[];
+      min?: number;
+      max?: number;
+    } = {
       key: '',
     },
   ) {
@@ -19,6 +27,7 @@ export class NumberBox extends BaseControl<number> {
     this.value = value;
     this.key = options.key;
     this.label = options.label;
+    this.validators = options.validators || [];
     this.min = options.min;
     this.max = options.max;
   }

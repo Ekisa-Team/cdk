@@ -12,7 +12,12 @@ import {
 import { FormControlType } from './enums/form-control-type.enum';
 import { FormControls } from './types/form-control.type';
 
-const renderTextBox = (config: TextBox): HTMLInputElement => {
+/**
+ * Build form TextBox & configure it
+ * @param config TextBox config
+ * @returns HTMLInputElement
+ */
+const buildTextBox = (config: TextBox): HTMLInputElement => {
   const input = document.createElement('input');
   input.type = 'text';
   input.id = config.key;
@@ -23,17 +28,24 @@ const renderTextBox = (config: TextBox): HTMLInputElement => {
   return input;
 };
 
-const renderTextArea = (config: TextArea): HTMLTextAreaElement => {
+/**
+ * Build form TextArea & configure it
+ * @param config TextArea config
+ * @returns HTMLTextAreaElement
+ */
+const buildTextArea = (config: TextArea): HTMLTextAreaElement => {
   const textarea = document.createElement('textarea');
   textarea.id = config.key;
   textarea.name = config.key;
   textarea.placeholder = config.placeholder ?? '';
   textarea.value = config.value ?? '';
 
+  // Set up cols attribute if there's any
   if (config.cols) {
     textarea.cols = config.cols;
   }
 
+  // Set up rows attribute if there's any
   if (config.rows) {
     textarea.rows = config.rows;
   }
@@ -41,20 +53,28 @@ const renderTextArea = (config: TextArea): HTMLTextAreaElement => {
   return textarea;
 };
 
-const renderNumberBox = (config: NumberBox): HTMLInputElement => {
+/**
+ * Build form NumberBox & configure it
+ * @param config NumberBox config
+ * @returns HTMLInputElement
+ */
+const buildNumberBox = (config: NumberBox): HTMLInputElement => {
   const input = document.createElement('input');
   input.id = config.key;
   input.name = config.key;
   input.type = 'number';
 
+  // Set up default value if there's any
   if (config.value !== undefined && config.value !== null) {
     input.valueAsNumber = config.value;
   }
 
+  // Set up min attribute if there's any
   if (config.min !== undefined) {
     input.min = config.min.toString();
   }
 
+  // Set up max attribute if there's any
   if (config.max !== undefined) {
     input.max = config.max.toString();
   }
@@ -62,11 +82,17 @@ const renderNumberBox = (config: NumberBox): HTMLInputElement => {
   return input;
 };
 
-const renderSelectBox = (config: SelectBox): HTMLSelectElement => {
+/**
+ * Build form SeletcBox & configure it
+ * @param config SeletcBox config
+ * @returns HTMLSelectElement
+ */
+const buildSelectBox = (config: SelectBox): HTMLSelectElement => {
   const select = document.createElement('select');
   select.id = config.key;
   select.name = config.key;
 
+  // Loop through select box options & assign attributes
   for (const opt of config.options) {
     const option = document.createElement('option');
     option.value = opt.value;
@@ -74,6 +100,7 @@ const renderSelectBox = (config: SelectBox): HTMLSelectElement => {
     select.append(option);
   }
 
+  // Set up default value if there's any
   if (config.value) {
     select.value = config.value;
   }
@@ -81,7 +108,12 @@ const renderSelectBox = (config: SelectBox): HTMLSelectElement => {
   return select;
 };
 
-const renderCheckBox = (config: CheckBox): HTMLInputElement => {
+/**
+ * Build form CheckBox & configure it
+ * @param config CheckBox config
+ * @returns HTMLInputElement
+ */
+const buildCheckBox = (config: CheckBox): HTMLInputElement => {
   const input = document.createElement('input');
   input.id = config.key;
   input.name = config.key;
@@ -90,15 +122,22 @@ const renderCheckBox = (config: CheckBox): HTMLInputElement => {
   return input;
 };
 
-const renderRadioGroup = (config: RadioGroup): HTMLDivElement => {
+/**
+ * Build form RadioGroup & configure it
+ * @param config RadioGroup config
+ * @returns HTMLDivElement
+ */
+const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
   const wrapper = document.createElement('div');
 
+  // Configure main radio group text
   if (config.text) {
     const p = document.createElement('p');
     p.textContent = config.text;
     wrapper.append(p);
   }
 
+  // Loop through radio items & assign attributes
   for (let i = 0; i < config.items.length; i++) {
     const item = config.items[i];
     const id = config.key + i;
@@ -110,10 +149,11 @@ const renderRadioGroup = (config: RadioGroup): HTMLDivElement => {
     input.value = item.value;
     wrapper.append(input);
 
-    const label = renderLabel(item.label, id);
+    const label = buildLabel(item.label, id);
     wrapper.append(label);
   }
 
+  // Set up default value if there's any
   if (config.value) {
     // Search node inside wrapper element
     const node = Array.from<HTMLInputElement>(
@@ -129,7 +169,12 @@ const renderRadioGroup = (config: RadioGroup): HTMLDivElement => {
   return wrapper;
 };
 
-const renderDatePicker = (config: DatePicker): HTMLInputElement => {
+/**
+ * Build form DatePicker & configure it
+ * @param config DatePicker config
+ * @returns HTMLInputElement
+ */
+const buildDatePicker = (config: DatePicker): HTMLInputElement => {
   const input = document.createElement('input');
   input.id = config.key;
   input.name = config.key;
@@ -138,7 +183,12 @@ const renderDatePicker = (config: DatePicker): HTMLInputElement => {
   return input;
 };
 
-const renderTimePicker = (config: TimePicker): HTMLInputElement => {
+/**
+ * Build form TimePicker & configure it
+ * @param config TimePicker config
+ * @returns HTMLInputElement
+ */
+const buildTimePicker = (config: TimePicker): HTMLInputElement => {
   const input = document.createElement('input');
   input.id = config.key;
   input.name = config.key;
@@ -147,27 +197,44 @@ const renderTimePicker = (config: TimePicker): HTMLInputElement => {
   return input;
 };
 
-const renderWrapper = (): HTMLDivElement => {
+/**
+ * Build form control wrapper
+ * @returns HTMLDivElement
+ */
+const buildWrapper = (): HTMLDivElement => {
   const div = document.createElement('div');
   return div;
 };
 
-const renderLabel = (text: string, htmlFor = '') => {
+/**
+ * Build form control label & configure it
+ * @param text label's text contet
+ * @param htmlFor form control id that allows bounding with label
+ * @returns HTMLLabelElement
+ */
+const buildLabel = (text: string, htmlFor = ''): HTMLLabelElement => {
   const label = document.createElement('label');
   label.textContent = text;
   label.htmlFor = htmlFor;
   return label;
 };
 
-const renderFieldSet = (config: FieldSet): HTMLFieldSetElement => {
+/**
+ * Build form FieldSet & configure it
+ * @param config FieldSet config
+ * @returns HTMLFieldSetElement
+ */
+const buildFieldSet = (config: FieldSet): HTMLFieldSetElement => {
   const fieldset = document.createElement('fieldset');
 
+  // Configure legend attribute
   if (config.legend) {
     const legend = document.createElement('legend');
     legend.textContent = config.legend;
     fieldset.append(legend);
   }
 
+  // Recursively re-render children elements if there are any
   if (config.children.length) {
     render<HTMLFieldSetElement>(fieldset, config.children);
   }
@@ -175,74 +242,84 @@ const renderFieldSet = (config: FieldSet): HTMLFieldSetElement => {
   return fieldset;
 };
 
-const renderForm = (controls: FormControls): HTMLFormElement => {
+/**
+ * Build form element & render its children elements
+ * @param controls collection of form elements
+ * @returns HTMLFormElement
+ */
+const buildForm = (controls: FormControls): HTMLFormElement => {
   const form = document.createElement('form');
   return render<HTMLFormElement>(form, controls);
 };
 
+/**
+ * Dynamically render form elements inside specified target
+ * @param target element where controls will be rendered
+ * @param controls collection of form elements
+ * @returns specified form element type that corresponds to target element
+ */
 function render<T extends HTMLElement>(target: T, controls: FormControls): T {
   for (const control of controls) {
-    const wrapper = renderWrapper();
+    const wrapper = buildWrapper();
 
     if (control.label) {
-      const label = renderLabel(control.label, control.key);
+      const label = buildLabel(control.label, control.key);
       wrapper.append(label);
     }
 
     switch (control.type) {
       case FormControlType.FieldSet:
-        target.append(renderFieldSet(control as FieldSet));
+        target.append(buildFieldSet(control as FieldSet));
         break;
       case FormControlType.TextBox:
         {
-          wrapper.append(renderTextBox(control as TextBox));
+          wrapper.append(buildTextBox(control as TextBox));
           target.append(wrapper);
         }
         break;
       case FormControlType.TextArea:
         {
-          wrapper.append(renderTextArea(control as TextArea));
+          wrapper.append(buildTextArea(control as TextArea));
           target.append(wrapper);
         }
         break;
       case FormControlType.NumberBox:
         {
-          wrapper.append(renderNumberBox(control as NumberBox));
+          wrapper.append(buildNumberBox(control as NumberBox));
           target.append(wrapper);
         }
         break;
       case FormControlType.SelectBox:
         {
-          wrapper.append(renderSelectBox(control as SelectBox));
+          wrapper.append(buildSelectBox(control as SelectBox));
           target.append(wrapper);
         }
         break;
       case FormControlType.CheckBox:
         {
-          wrapper.append(renderCheckBox(control as CheckBox));
+          wrapper.append(buildCheckBox(control as CheckBox));
           target.append(wrapper);
         }
         break;
       case FormControlType.RadioGroup:
         {
-          wrapper.append(renderRadioGroup(control as RadioGroup));
+          wrapper.append(buildRadioGroup(control as RadioGroup));
           target.append(wrapper);
         }
         break;
       case FormControlType.DatePicker:
         {
-          wrapper.append(renderDatePicker(control as DatePicker));
+          wrapper.append(buildDatePicker(control as DatePicker));
           target.append(wrapper);
         }
         break;
       case FormControlType.TimePicker:
         {
-          wrapper.append(renderTimePicker(control as TimePicker));
+          wrapper.append(buildTimePicker(control as TimePicker));
           target.append(wrapper);
         }
         break;
       default:
-        console.log(control);
         throw new Error('Form control is not yet supported');
     }
   }
@@ -251,14 +328,14 @@ function render<T extends HTMLElement>(target: T, controls: FormControls): T {
 }
 
 export default {
-  renderTextBox,
-  renderTextArea,
-  renderNumberBox,
-  renderSelectBox,
-  renderCheckBox,
-  renderRadioGroup,
-  renderDatePicker,
-  renderTimePicker,
-  renderFieldSet,
-  renderForm,
+  buildTextBox,
+  buildTextArea,
+  buildNumberBox,
+  buildSelectBox,
+  buildCheckBox,
+  buildRadioGroup,
+  buildDatePicker,
+  buildTimePicker,
+  buildFieldSet,
+  buildForm,
 };

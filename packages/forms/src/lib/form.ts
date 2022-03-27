@@ -1,92 +1,111 @@
-import { AbstractForm } from './abstract-form';
+import { AbstractForm, ValidationOutput } from './abstract-form';
+import renderUtils from './builder';
 import { FieldSet } from './controls';
+import { AbstractControl } from './controls/abstract-control';
 import { FormControlType } from './enums/form-control-type.enum';
-import renderUtils from './renderer';
+import { findPlugin, PluginsCollection } from './plugins';
+import { ValidationsPlugin } from './plugins/validations.plugin';
 import { FormControls } from './types/form-control.type';
-import { FormPersistenceEvent, FormPersistenceType } from './types/form-persistence.type';
 
 export class Form extends AbstractForm {
-  /** List of dynamically configured form controls */
+  /*
+   * List of dynamically configured form controls
+   */
   dataSource!: FormControls;
 
-  formColumns!: number;
+  /**
+   * Collection of form plugins that extend its functionality
+   */
+  plugins: PluginsCollection;
 
-  /** Control status  */
-  _isReadonly!: boolean;
-
-  get isReadonly() {
-    return this._isReadonly;
+  //#region Accesors
+  get controls(): Array<AbstractControl> {
+    return this._flattenControls(this.dataSource);
   }
+  //#endregion
 
-  set isReadonly(status: boolean) {
-    this._isReadonly = status;
-  }
-
-  /** Control status  */
-  _isDisabled!: boolean;
-
-  get isDisabled() {
-    return this._isDisabled;
-  }
-
-  set isDisabled(status: boolean) {
-    this._isDisabled = status;
-  }
-
-  _form!: HTMLFormElement;
-
-  constructor(args: {
-    dataSource: FormControls;
-    columns?: number;
-    readonly?: boolean;
-    disabled?: boolean;
-  }) {
+  constructor(args: { dataSource: FormControls; plugins: PluginsCollection }) {
     super();
 
     this.dataSource = args.dataSource;
-    this.formColumns = args.columns ?? 1;
-    this.isReadonly = args.readonly ?? false;
-    this.isDisabled = args.disabled ?? false;
+    this.plugins = args.plugins || [];
   }
 
+  /**
+   * Render dynamic form inside parent element
+   * @param parent HTML element where the form will be rendered
+   */
   override render(parent: HTMLBodyElement | HTMLDivElement): void {
-    const form = renderUtils.renderForm(this.dataSource);
+    const form = renderUtils.buildForm(this.dataSource);
     parent.append(form);
-    this._form = form;
   }
 
+  /**
+   * Reset form elements to defaults
+   */
   override reset(): void {
     throw new Error('Method not implemented.');
   }
 
-  override validate(): boolean {
-    throw new Error('Method not implemented.');
+  /**
+   * Check validity of configured control validators
+   * @returns ValidationOutput or null if no errors are found
+   */
+  override validate(): ValidationOutput {
+    const errors: ValidationOutput = [];
+    const controls = this.controls;
+
+    // Traverse form controls & check for errors
+    for (const c of controls) {
+      if (c.validators.length === 0) continue;
+
+      c.getParentElement()?.querySelector('.ef-errors-wrapper')?.remove();
+      const { errors: controlErrors } = c;
+
+      if (controlErrors) {
+        errors.push({ control: c, errors: controlErrors });
+      }
+    }
+
+    // Activate ValidationsPlugin if it's found
+    const plugin = findPlugin(this.plugins, ValidationsPlugin);
+
+    if (plugin) {
+      plugin.run(errors);
+    }
+
+    return errors.length === 0 ? null : errors;
   }
 
-  override persist(args: { in: FormPersistenceType; when: FormPersistenceEvent }): boolean {
-    throw new Error('Method not implemented.');
-  }
-
+  /**
+   * Convert controls values to JSON format
+   * @returns specified generic type
+   */
   override toJSON<T>(): T {
-    const keyValuePairs: Array<[string, unknown]> = this.getKeyValuePairs(this.dataSource);
+    const controls = this._flattenControls(this.dataSource);
     const formData: Record<string, unknown> = {};
 
-    keyValuePairs.forEach(([key, value]) => {
-      formData[key] = value;
+    controls.forEach((c) => {
+      formData[c.key] = c.getValue();
     });
 
     return formData as Record<string, unknown> as T;
   }
 
-  private getKeyValuePairs(controls: FormControls): Array<[string, unknown]> {
-    let result: Array<[string, unknown]> = [];
+  /**
+   * Return all form controls & all nested fieldset controls
+   * @param controls
+   * @returns flatten nested controls inside fieldsets
+   */
+  private _flattenControls(controls: FormControls): Array<AbstractControl> {
+    let result: Array<AbstractControl> = [];
 
     for (const c of controls) {
       if (c.type === FormControlType.FieldSet) {
         const children = (c as unknown as FieldSet).children;
-        result = [...result, ...this.getKeyValuePairs(children)];
+        result = [...result, ...this._flattenControls(children)];
       } else {
-        result.push([c.key, c.getValue()]);
+        result.push(c);
       }
     }
 

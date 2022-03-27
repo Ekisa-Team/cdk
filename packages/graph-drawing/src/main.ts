@@ -36,7 +36,6 @@ if (container) {
 
   const getCoordinates = () => {
     const coordinates = graph.getCoordinates();
-    console.log(coordinates);
     alert('Check the console');
   };
 

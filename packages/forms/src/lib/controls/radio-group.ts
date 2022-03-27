@@ -1,27 +1,33 @@
 import { FormControlType } from '../enums/form-control-type.enum';
-import { BaseControl } from './base-control';
+import { ValidatorFn } from '../validators';
+import { AbstractControl } from './abstract-control';
 
 export type RadioGroupItem = {
   value: string;
   label: string;
 };
 
-export class RadioGroup extends BaseControl<string> {
+export class RadioGroup extends AbstractControl {
   override type = FormControlType.RadioGroup;
   override key: string;
   override value: string | null;
+  override validators: ValidatorFn[];
   text: string | undefined;
   items: RadioGroupItem[] = [];
 
   constructor(
     value: string | null,
-    options: { key: string; text?: string; items: RadioGroupItem[] } = { key: '', items: [] },
+    options: { key: string; text?: string; items: RadioGroupItem[]; validators?: ValidatorFn[] } = {
+      key: '',
+      items: [],
+    },
   ) {
     super(value, options);
     this.value = value;
     this.key = options.key;
     this.text = options.text;
     this.items = options.items;
+    this.validators = options.validators || [];
   }
 
   override getValue(): string | null {
