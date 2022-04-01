@@ -5,6 +5,7 @@ import {
   FieldSet,
   Form,
   FormControls,
+  FormControlType,
   NumberBox,
   RadioGroup,
   SelectBox,
@@ -12,6 +13,7 @@ import {
   TextBox,
   TimePicker,
 } from './lib';
+import { EventsPlugin } from './lib/plugins/events.plugin';
 import { ValidationsPlugin } from './lib/plugins/validations.plugin';
 import { Validators } from './lib/validators';
 
@@ -45,12 +47,12 @@ const formData: FormControls = [
         placeholder: 'Número',
         validators: [Validators.required],
       }),
-      new DatePicker(null, {
+      new TextBox(null, {
         key: 'nombres',
         label: 'Nombres',
         validators: [Validators.required],
       }),
-      new DatePicker(null, {
+      new TextBox(null, {
         key: 'apellidos',
         label: 'Apellidos',
         validators: [Validators.required],
@@ -199,11 +201,34 @@ const form = new Form({
 });
 form.render(app);
 
-saveBtn.addEventListener('click', () => {
-  const errors = form.validate();
-  console.log(errors);
+let submitted = false;
 
-  if (!errors?.length) {
+saveBtn.addEventListener('click', () => {
+  submitted = true;
+
+  const errors = form.validate();
+
+  if (errors === null) {
     console.log(form.toJSON());
+  }
+});
+
+form.controls.forEach((c) => {
+  const eventsPlugin = new EventsPlugin();
+
+  if (c.type === FormControlType.RadioGroup) {
+    eventsPlugin.run({
+      targetKey: c.key,
+      attachmentType: 'multiple',
+      on: 'change',
+      listener: () => submitted && form.validate(),
+    });
+  } else {
+    eventsPlugin.run({
+      targetKey: c.key,
+      attachmentType: 'single',
+      on: 'change',
+      listener: () => submitted && form.validate(),
+    });
   }
 });

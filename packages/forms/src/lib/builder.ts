@@ -142,6 +142,7 @@ const buildCheckBox = (config: CheckBox): HTMLDivElement => {
 const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
   const wrapper = document.createElement('div');
   wrapper.dataset.unitType = FormControlType.RadioGroup;
+  wrapper.id = config.key;
 
   // Configure main radio group text
   if (config.text) {

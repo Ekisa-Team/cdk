@@ -7,7 +7,7 @@ import { ValidationsPlugin } from './plugins/validations.plugin';
  *
  * A plugin is an encapsulated functionality that allows to extend form's functionallity
  */
-export interface FormPlugin<T> {
+export interface FormPlugin<T = void> {
   /**
    * @description
    * Run process when the form needs it

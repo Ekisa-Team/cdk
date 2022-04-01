@@ -49,7 +49,6 @@ export class ValidationsPlugin implements FormPlugin<ValidationOutput> {
       }
 
       for (const error of val.errors) {
-        console.log(val.control, error);
         if (error.required) {
           const errorMessage = document.createElement(this._childElement) as HTMLParagraphElement;
           errorMessage.dataset.unitType = 'ValidationItem';
