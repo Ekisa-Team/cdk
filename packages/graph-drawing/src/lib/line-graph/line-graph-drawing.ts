@@ -9,7 +9,7 @@ export class LineGraphDrawing extends GraphDrawing {
     super(config);
   }
 
-  mountScopedFrame({
+  override mountScopedFrame({
     image,
     style,
   }: {
@@ -51,7 +51,7 @@ export class LineGraphDrawing extends GraphDrawing {
     return this;
   }
 
-  startProcess(): LineGraphDrawing {
+  override startProcess(): LineGraphDrawing {
     const element = this.getContainerElement()!;
 
     if (!element) throw new Error('The scoped frame is not properly configured');
@@ -86,7 +86,7 @@ export class LineGraphDrawing extends GraphDrawing {
     return this;
   }
 
-  redraw(): void {
+  override redraw(): void {
     const nodes = this.nodes;
     const lines = this.lines;
 
@@ -95,20 +95,20 @@ export class LineGraphDrawing extends GraphDrawing {
 
     if (!nodes || nodes.length < 2) return;
 
-    // Traverse nodes & connect nodes
+    // Traverse nodes & connect them with lines
     for (let i = 0; i < nodes.length; i++) {
       const current = nodes[i];
       const next = nodes[i + 1];
 
       if (!next) return;
 
-      // Get coordinates for two subsequent dots
+      // Get coordinates for two subsequent nodes
       const currentCx = current.getAttribute('cx')!;
       const currentCy = current.getAttribute('cy')!;
       const nextCx = next.getAttribute('cx')!;
       const nextCy = next.getAttribute('cy')!;
 
-      // Draw line between two subsequent dots
+      // Draw line between two subsequent nodes
       const config = this.getCurrentConfig();
 
       this.line = {

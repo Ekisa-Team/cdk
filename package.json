@@ -8,9 +8,9 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "dev:graph-drawing": "npm run dev --workspace=packages/graph-drawing",
-    "build:graph-drawing": "npm run build --workspace=packages/graph-drawing",
-    "preview:graph-drawing": "npm run preview --workspace=packages/graph-drawing",
+    "dev": "npm run dev --workspace",
+    "build": "npm run build --workspace",
+    "preview": "npm run preview --workspace",
     "test": "vitest",
     "test:run": "vitest run",
     "coverage": "vitest run --coverage",
