@@ -48,7 +48,7 @@ export function requiredValidator(control: AbstractControl): ValidationErrors | 
  * Validator that requires the control's value be true.
  */
 export function requiredTrueValidator(control: AbstractControl): ValidationErrors | null {
-  return control.getValue() === true ? null : { required: true };
+  return control.getValue() === true ? null : { requiredTrue: true };
 }
 
 /**

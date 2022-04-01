@@ -22,16 +22,12 @@ const formData: FormControls = [
   new TextBox(null, {
     key: 'actividad',
     label: 'Actividad',
-    placeholder: 'abc',
-    validators: [
-      Validators.required,
-      Validators.email,
-      Validators.minLength(5),
-      Validators.maxLength(20),
-    ],
+    placeholder: 'Longitud: 5 - 20 caracteres',
+    validators: [Validators.required, Validators.minLength(5), Validators.maxLength(20)],
   }),
   new FieldSet({
     legend: 'Información personal',
+    cols: 2,
     children: [
       new SelectBox(null, {
         key: 'tipoDocumento',
@@ -50,6 +46,16 @@ const formData: FormControls = [
         validators: [Validators.required],
       }),
       new DatePicker(null, {
+        key: 'nombres',
+        label: 'Nombres',
+        validators: [Validators.required],
+      }),
+      new DatePicker(null, {
+        key: 'apellidos',
+        label: 'Apellidos',
+        validators: [Validators.required],
+      }),
+      new DatePicker(null, {
         key: 'fechaNacimiento',
         label: 'Fecha de nacimiento',
         validators: [Validators.required],
@@ -63,52 +69,133 @@ const formData: FormControls = [
   }),
   new FieldSet({
     legend: 'Información de contacto',
+    cols: 2,
     children: [
+      new SelectBox(null, {
+        key: 'ciudad',
+        label: 'Ciudad',
+        options: [
+          { value: '', text: '-- Seleccionar --' },
+          { value: '1', text: 'Medellín' },
+          { value: '2', text: 'Cali' },
+          { value: '3', text: 'Bogotá' },
+        ],
+        validators: [Validators.required],
+      }),
+      new TextBox(null, {
+        key: 'codigoPostal',
+        label: 'Código postal',
+        validators: [Validators.required],
+      }),
       new TextBox(null, {
         key: 'email',
         placeholder: 'someone@mail.com',
         label: 'Correo electrónico',
         validators: [Validators.required, Validators.email],
       }),
+      new TextBox(null, {
+        key: 'direccion',
+        label: 'Dirección',
+        validators: [Validators.required],
+      }),
     ],
   }),
   new FieldSet({
     legend: 'Información académica',
+    cols: 2,
     children: [
+      new SelectBox(null, {
+        key: 'programa',
+        label: 'Programa',
+        options: [
+          { value: '', text: '-- Seleccionar --' },
+          { value: '1', text: 'Derecho' },
+          { value: '2', text: 'Matemáticas' },
+          { value: '3', text: 'Ing. Sistemas' },
+          { value: '4', text: 'Ing. Química' },
+        ],
+        validators: [Validators.required],
+      }),
       new NumberBox(null, {
         key: 'semestre',
         label: 'Semestre',
-        validators: [Validators.required, Validators.min(3), Validators.max(10)],
+        validators: [Validators.required, Validators.min(1), Validators.max(10)],
       }),
     ],
   }),
-  new CheckBox(null, { key: 'aceptaCorreos', label: 'Quiero que me envíen correos' }),
-  new CheckBox(null, {
-    key: 'aceptaTerminos',
-    label: 'Acepto el tratamiento de datos',
-    validators: [Validators.requiredTrue],
-  }),
-  new RadioGroup(null, {
-    key: 'colorFavorito',
-    text: 'Escoja su color favorito',
-    items: [
-      { label: 'Amarillo', value: 'yellow' },
-      { label: 'Azul', value: 'blue' },
-      { label: 'Rojo', value: 'red' },
+  new FieldSet({
+    legend: 'Notificaciones y política de tratamiento de datos',
+    children: [
+      new CheckBox(null, {
+        key: 'aceptaTratamientoDatos',
+        label: 'Acepta nuestra política de tratamiento de datos',
+        validators: [Validators.requiredTrue],
+      }),
+      new CheckBox(null, {
+        key: 'aceptaEnvioNotificaciones',
+        label: 'Acepta que le enviemos notificaciones del proceso',
+      }),
+      new RadioGroup(null, {
+        key: 'metodoNotificaciones',
+        text: 'Seleccione el método de atención favorito',
+        items: [
+          {
+            value: 'email',
+            label: '✉️ Email',
+          },
+          {
+            value: 'whatsapp',
+            label: '🤳 Whatsapp',
+          },
+          {
+            value: 'llamada',
+            label: '📞 Llamada',
+          },
+        ],
+        validators: [Validators.required],
+      }),
     ],
-    validators: [Validators.required],
   }),
-  new TextArea(null, {
-    key: 'observaciones',
-    label: 'Observaciones',
-    placeholder: 'Lista de items que se desarrollarán en la actividad',
-    validators: [Validators.required],
+  new FieldSet({
+    legend: 'Feedback',
+    children: [
+      new RadioGroup(null, {
+        key: 'satisfaccion',
+        text: 'Seleccione el nivel de satisfacción',
+        items: [
+          { value: '1', label: '⭐' },
+          { value: '2', label: '⭐⭐' },
+          { value: '3', label: '⭐⭐⭐' },
+          { value: '4', label: '⭐⭐⭐⭐' },
+          { value: '5', label: '⭐⭐⭐⭐⭐' },
+        ],
+        validators: [Validators.required],
+      }),
+      new TextArea(null, {
+        key: 'observaciones',
+        label: 'Observaciones',
+        placeholder: '¿Cómo podemos mejorar? 🤔',
+        validators: [Validators.required],
+      }),
+    ],
   }),
 ];
 
 const form = new Form({
   dataSource: formData,
-  plugins: [new ValidationsPlugin()],
+  plugins: [
+    new ValidationsPlugin({
+      messages: {
+        required: 'Campo obligatorio',
+        requiredTrue: 'Debe aceptar la política de tratamiento de datos',
+        email: 'El correo electrónico es inválido',
+        min: 'El valor {1} es incorrecto. El mínimo definido es {0}',
+        max: 'El valor {1} es incorrecto. El máximo definido es {0}',
+        minLength: 'longitud incorrecta: mínimo es {0} y el valor ingresado es {1}',
+        maxLength: 'longitud incorrecta: máximo es {0} y el valor ingresado es {1}',
+      },
+    }),
+  ],
 });
 form.render(app);
 

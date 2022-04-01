@@ -91,16 +91,56 @@ body {
 
 /* fieldset */
 [data-unit-type='FieldSet'] {
-  padding: 0;
+  display: grid;
+  column-gap: 2rem;
   border: none;
   margin-top: 2rem;
+  padding: 0;
 }
 [data-unit-type='FieldSetLegend'] {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   font-weight: var(--font-semibold);
+  border-bottom: solid 1px var(--color-gray-200);
+  width: 100%;
+  padding-bottom: 0.5rem;
+}
+
+[data-unit-type='FieldSet'] {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media screen and (min-width: 720px) {
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='1'] {grid-template-columns: repeat(1, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='2'] {grid-template-columns: repeat(2, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='3'] {grid-template-columns: repeat(3, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='4'] {grid-template-columns: repeat(4, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='5'] {grid-template-columns: repeat(5, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='6'] {grid-template-columns: repeat(6, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='7'] {grid-template-columns: repeat(7, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='8'] {grid-template-columns: repeat(8, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='9'] {grid-template-columns: repeat(9, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='10'] {grid-template-columns: repeat(10, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='11'] {grid-template-columns: repeat(11, 1fr);}
+  /* prettier-ignore */
+  [data-unit-type='FieldSet'][data-cols='12'] {grid-template-columns: repeat(12, 1fr);}
 }
 
 /* Wrapper */
+[data-unit-type='Wrapper'] {
+  width: 100%;
+}
+
 [data-unit-type='Wrapper'][data-for='TextBox'],
 [data-unit-type='Wrapper'][data-for='NumberBox'],
 [data-unit-type='Wrapper'][data-for='DatePicker'],
@@ -111,7 +151,7 @@ body {
 }
 
 [data-unit-type='Wrapper'][data-for='RadioGroup'] {
-  margin: 1.5rem auto;
+  margin: 1rem auto;
 }
 [data-unit-type='RadioGroupItemWrapper'],
 [data-unit-type='CheckBoxItemWrapper'] {
@@ -124,7 +164,7 @@ body {
 [data-unit-type='Label'],
 [data-unit-type='RadioGroupText'] {
   font-weight: var(--font-medium);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   line-height: 1.25rem;
 }
 
@@ -284,8 +324,8 @@ body {
   color: #fff;
   cursor: pointer;
   display: inline-flex;
-  font-size: 0.875rem;
-  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
   justify-content: center;
   padding: 0.5rem 1rem;
 }

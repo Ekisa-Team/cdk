@@ -261,6 +261,10 @@ const buildFieldSet = (config: FieldSet): HTMLFieldSetElement => {
     fieldset.append(legend);
   }
 
+  if (config.cols) {
+    fieldset.dataset.cols = config.cols.toString();
+  }
+
   // Recursively re-render children elements if there are any
   if (config.children.length) {
     render<HTMLFieldSetElement>(fieldset, config.children);
