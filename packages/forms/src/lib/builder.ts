@@ -19,6 +19,7 @@ import { FormControls } from './types/form-control.type';
  */
 const buildTextBox = (config: TextBox): HTMLInputElement => {
   const input = document.createElement('input');
+  input.dataset.unitType = FormControlType.TextBox;
   input.type = 'text';
   input.id = config.key;
   input.name = config.key;
@@ -35,6 +36,7 @@ const buildTextBox = (config: TextBox): HTMLInputElement => {
  */
 const buildTextArea = (config: TextArea): HTMLTextAreaElement => {
   const textarea = document.createElement('textarea');
+  textarea.dataset.unitType = FormControlType.TextArea;
   textarea.id = config.key;
   textarea.name = config.key;
   textarea.placeholder = config.placeholder ?? '';
@@ -60,6 +62,7 @@ const buildTextArea = (config: TextArea): HTMLTextAreaElement => {
  */
 const buildNumberBox = (config: NumberBox): HTMLInputElement => {
   const input = document.createElement('input');
+  input.dataset.unitType = FormControlType.NumberBox;
   input.id = config.key;
   input.name = config.key;
   input.type = 'number';
@@ -89,12 +92,14 @@ const buildNumberBox = (config: NumberBox): HTMLInputElement => {
  */
 const buildSelectBox = (config: SelectBox): HTMLSelectElement => {
   const select = document.createElement('select');
+  select.dataset.unitType = FormControlType.SelectBox;
   select.id = config.key;
   select.name = config.key;
 
   // Loop through select box options & assign attributes
   for (const opt of config.options) {
     const option = document.createElement('option');
+    option.dataset.unitType = FormControlType.SelectBox + 'Option';
     option.value = opt.value;
     option.text = opt.text;
     select.append(option);
@@ -113,13 +118,20 @@ const buildSelectBox = (config: SelectBox): HTMLSelectElement => {
  * @param config CheckBox config
  * @returns HTMLInputElement
  */
-const buildCheckBox = (config: CheckBox): HTMLInputElement => {
+const buildCheckBox = (config: CheckBox): HTMLDivElement => {
   const input = document.createElement('input');
+  input.dataset.unitType = FormControlType.CheckBox + 'Item';
   input.id = config.key;
   input.name = config.key;
   input.type = 'checkbox';
   input.checked = config.value ?? false;
-  return input;
+
+  const itemWrapper = document.createElement('div');
+  itemWrapper.dataset.unitType = FormControlType.CheckBox + 'ItemWrapper';
+  itemWrapper.append(input);
+  itemWrapper.append(buildLabel(config.label, config.key));
+
+  return itemWrapper;
 };
 
 /**
@@ -129,10 +141,12 @@ const buildCheckBox = (config: CheckBox): HTMLInputElement => {
  */
 const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
   const wrapper = document.createElement('div');
+  wrapper.dataset.unitType = FormControlType.RadioGroup;
 
   // Configure main radio group text
   if (config.text) {
     const p = document.createElement('p');
+    p.dataset.unitType = FormControlType.RadioGroup + 'Text';
     p.textContent = config.text;
     wrapper.append(p);
   }
@@ -142,15 +156,21 @@ const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
     const item = config.items[i];
     const id = config.key + i;
 
+    // Radio item
     const input = document.createElement('input');
+    input.dataset.unitType = FormControlType.RadioGroup + 'Item';
     input.type = 'radio';
     input.id = id;
     input.name = config.key;
     input.value = item.value;
-    wrapper.append(input);
 
-    const label = buildLabel(item.label, id);
-    wrapper.append(label);
+    // Radio item wrapper
+    const itemWrapper = document.createElement('div');
+    itemWrapper.dataset.unitType = FormControlType.RadioGroup + 'ItemWrapper';
+    itemWrapper.append(input);
+    itemWrapper.append(buildLabel(item.label, id));
+
+    wrapper.append(itemWrapper);
   }
 
   // Set up default value if there's any
@@ -176,6 +196,7 @@ const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
  */
 const buildDatePicker = (config: DatePicker): HTMLInputElement => {
   const input = document.createElement('input');
+  input.dataset.unitType = FormControlType.DatePicker;
   input.id = config.key;
   input.name = config.key;
   input.type = 'date';
@@ -190,6 +211,7 @@ const buildDatePicker = (config: DatePicker): HTMLInputElement => {
  */
 const buildTimePicker = (config: TimePicker): HTMLInputElement => {
   const input = document.createElement('input');
+  input.dataset.unitType = FormControlType.TimePicker;
   input.id = config.key;
   input.name = config.key;
   input.type = 'time';
@@ -201,8 +223,10 @@ const buildTimePicker = (config: TimePicker): HTMLInputElement => {
  * Build form control wrapper
  * @returns HTMLDivElement
  */
-const buildWrapper = (): HTMLDivElement => {
+const buildWrapper = (controlFor: FormControlType): HTMLDivElement => {
   const div = document.createElement('div');
+  div.dataset.unitType = 'Wrapper';
+  div.dataset.for = controlFor;
   return div;
 };
 
@@ -214,6 +238,7 @@ const buildWrapper = (): HTMLDivElement => {
  */
 const buildLabel = (text: string, htmlFor = ''): HTMLLabelElement => {
   const label = document.createElement('label');
+  label.dataset.unitType = 'Label';
   label.textContent = text;
   label.htmlFor = htmlFor;
   return label;
@@ -226,10 +251,12 @@ const buildLabel = (text: string, htmlFor = ''): HTMLLabelElement => {
  */
 const buildFieldSet = (config: FieldSet): HTMLFieldSetElement => {
   const fieldset = document.createElement('fieldset');
+  fieldset.dataset.unitType = FormControlType.FieldSet;
 
   // Configure legend attribute
   if (config.legend) {
     const legend = document.createElement('legend');
+    legend.dataset.unitType = FormControlType.FieldSet + 'Legend';
     legend.textContent = config.legend;
     fieldset.append(legend);
   }
@@ -249,6 +276,7 @@ const buildFieldSet = (config: FieldSet): HTMLFieldSetElement => {
  */
 const buildForm = (controls: FormControls): HTMLFormElement => {
   const form = document.createElement('form');
+  form.dataset.unitType = 'Form';
   return render<HTMLFormElement>(form, controls);
 };
 
@@ -260,9 +288,9 @@ const buildForm = (controls: FormControls): HTMLFormElement => {
  */
 function render<T extends HTMLElement>(target: T, controls: FormControls): T {
   for (const control of controls) {
-    const wrapper = buildWrapper();
+    const wrapper = buildWrapper(control.type);
 
-    if (control.label) {
+    if (control.label && control.type !== FormControlType.CheckBox) {
       const label = buildLabel(control.label, control.key);
       wrapper.append(label);
     }

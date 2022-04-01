@@ -30,6 +30,14 @@ export class RadioGroup extends AbstractControl {
     this.validators = options.validators || [];
   }
 
+  override getElement<T extends HTMLElement>(): T | null {
+    return document.querySelector(`[data-unit-type="RadioGroup"]`);
+  }
+
+  override getParentElement(): HTMLDivElement | null {
+    return document.querySelector(`[data-unit-type="RadioGroup"]`)?.parentElement as HTMLDivElement;
+  }
+
   override getValue(): string | null {
     const node = Array.from<HTMLInputElement>(
       document.querySelectorAll(`[name=${this.key}]`),

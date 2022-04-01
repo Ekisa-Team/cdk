@@ -6,12 +6,12 @@ export class CheckBox extends AbstractControl {
   override type = FormControlType.CheckBox;
   override key: string;
   override value: boolean | null;
-  override label: string | undefined;
+  override label: string;
   override validators: ValidatorFn[];
 
   constructor(
     value: boolean | null,
-    options: { key: string; label?: string; validators?: ValidatorFn[] } = { key: '' },
+    options: { key: string; label: string; validators?: ValidatorFn[] } = { key: '', label: '' },
   ) {
     super(value, options);
     this.value = value;

@@ -41,6 +41,10 @@ export abstract class AbstractControl {
     this.validators = options.validators || [];
   }
 
+  getElement<T extends HTMLElement>(): T | null {
+    return document.querySelector(`#${this.key}`);
+  }
+
   getParentElement(): HTMLDivElement | null {
     return document.querySelector(`#${this.key}`)?.parentElement as HTMLDivElement;
   }

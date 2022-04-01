@@ -4,6 +4,7 @@ import { FieldSet } from './controls';
 import { AbstractControl } from './controls/abstract-control';
 import { FormControlType } from './enums/form-control-type.enum';
 import { findPlugin, PluginsCollection } from './plugins';
+import { CssPlugin } from './plugins/css.plugin';
 import { ValidationsPlugin } from './plugins/validations.plugin';
 import { FormControls } from './types/form-control.type';
 
@@ -38,6 +39,10 @@ export class Form extends AbstractForm {
   override render(parent: HTMLBodyElement | HTMLDivElement): void {
     const form = renderUtils.buildForm(this.dataSource);
     parent.append(form);
+
+    // Activate StylesPlugin if it's found
+    const plugin = findPlugin(this.plugins, CssPlugin);
+    plugin?.run(form);
   }
 
   /**
@@ -59,9 +64,12 @@ export class Form extends AbstractForm {
     for (const c of controls) {
       if (c.validators.length === 0) continue;
 
-      c.getParentElement()?.querySelector('.ef-errors-wrapper')?.remove();
-      const { errors: controlErrors } = c;
+      // Reset validations status
+      const parent = c.getElement()?.closest('[data-unit-type="Wrapper"]') as HTMLDivElement;
+      parent?.querySelector('[data-unit-type="ValidationsWrapper"]')?.remove();
+      delete parent?.dataset.status;
 
+      const { errors: controlErrors } = c;
       if (controlErrors) {
         errors.push({ control: c, errors: controlErrors });
       }
@@ -69,10 +77,7 @@ export class Form extends AbstractForm {
 
     // Activate ValidationsPlugin if it's found
     const plugin = findPlugin(this.plugins, ValidationsPlugin);
-
-    if (plugin) {
-      plugin.run(errors);
-    }
+    plugin?.run(errors);
 
     return errors.length === 0 ? null : errors;
   }
@@ -82,10 +87,9 @@ export class Form extends AbstractForm {
    * @returns specified generic type
    */
   override toJSON<T>(): T {
-    const controls = this._flattenControls(this.dataSource);
     const formData: Record<string, unknown> = {};
 
-    controls.forEach((c) => {
+    this.controls.forEach((c) => {
       formData[c.key] = c.getValue();
     });
 
@@ -97,13 +101,18 @@ export class Form extends AbstractForm {
    * @param controls
    * @returns flatten nested controls inside fieldsets
    */
-  private _flattenControls(controls: FormControls): Array<AbstractControl> {
+  private _flattenControls(controls: FormControls, includeParents = false): Array<AbstractControl> {
     let result: Array<AbstractControl> = [];
 
     for (const c of controls) {
       if (c.type === FormControlType.FieldSet) {
         const children = (c as unknown as FieldSet).children;
-        result = [...result, ...this._flattenControls(children)];
+
+        if (includeParents) {
+          result = [...result, c, ...this._flattenControls(children)];
+        } else {
+          result = [...result, ...this._flattenControls(children)];
+        }
       } else {
         result.push(c);
       }

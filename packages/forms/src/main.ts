@@ -1,3 +1,4 @@
+import './app.css';
 import {
   CheckBox,
   DatePicker,
@@ -18,7 +19,7 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 const saveBtn = document.querySelector<HTMLDivElement>('#saveBtn')!;
 
 const formData: FormControls = [
-  new TextBox('abc', {
+  new TextBox(null, {
     key: 'actividad',
     label: 'Actividad',
     placeholder: 'abc',
@@ -40,15 +41,23 @@ const formData: FormControls = [
           { value: '1', text: 'Cédula' },
           { value: '2', text: 'Tarjeta de identidad', meta: ['some-metadata'] },
         ],
+        validators: [Validators.required],
       }),
-      new TextBox('documento', { key: 'documento', label: 'Documento', placeholder: 'Número' }),
+      new TextBox(null, {
+        key: 'documento',
+        label: 'Documento',
+        placeholder: 'Número',
+        validators: [Validators.required],
+      }),
       new DatePicker(null, {
         key: 'fechaNacimiento',
         label: 'Fecha de nacimiento',
+        validators: [Validators.required],
       }),
       new TimePicker(null, {
         key: 'horaNacimiento',
         label: 'Hora de nacimiento',
+        validators: [Validators.required],
       }),
     ],
   }),
@@ -59,22 +68,22 @@ const formData: FormControls = [
         key: 'email',
         placeholder: 'someone@mail.com',
         label: 'Correo electrónico',
-        validators: [Validators.email],
+        validators: [Validators.required, Validators.email],
       }),
     ],
   }),
   new FieldSet({
     legend: 'Información académica',
     children: [
-      new NumberBox(5, {
+      new NumberBox(null, {
         key: 'semestre',
         label: 'Semestre',
-        validators: [Validators.min(3), Validators.max(10)],
+        validators: [Validators.required, Validators.min(3), Validators.max(10)],
       }),
     ],
   }),
-  new CheckBox(true, { key: 'aceptaCorreos', label: 'Quiero que me envíen correos' }),
-  new CheckBox(true, {
+  new CheckBox(null, { key: 'aceptaCorreos', label: 'Quiero que me envíen correos' }),
+  new CheckBox(null, {
     key: 'aceptaTerminos',
     label: 'Acepto el tratamiento de datos',
     validators: [Validators.requiredTrue],
@@ -87,17 +96,20 @@ const formData: FormControls = [
       { label: 'Azul', value: 'blue' },
       { label: 'Rojo', value: 'red' },
     ],
+    validators: [Validators.required],
   }),
-  new TextArea('observaciones', {
+  new TextArea(null, {
     key: 'observaciones',
     label: 'Observaciones',
     placeholder: 'Lista de items que se desarrollarán en la actividad',
-    cols: 60,
-    rows: 10,
+    validators: [Validators.required],
   }),
 ];
 
-const form = new Form({ dataSource: formData, plugins: [new ValidationsPlugin()] });
+const form = new Form({
+  dataSource: formData,
+  plugins: [new ValidationsPlugin()],
+});
 form.render(app);
 
 saveBtn.addEventListener('click', () => {
