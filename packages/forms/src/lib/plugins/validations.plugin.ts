@@ -24,8 +24,6 @@ export class ValidationsPlugin implements FormPlugin<ValidationOutput> {
     if (!validations) return;
 
     for (const val of validations) {
-      console.log(val.control.key, val.control.getElement());
-
       const parent = val.control
         .getElement()
         ?.closest('[data-unit-type="Wrapper"]') as HTMLDivElement;

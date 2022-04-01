@@ -51,7 +51,6 @@ export class CssPlugin implements FormPlugin<HTMLFormElement> {
   }
 
   run(input: HTMLFormElement): void {
-    console.log(input, this._styles);
     if (!this._styles) return;
 
     const {
