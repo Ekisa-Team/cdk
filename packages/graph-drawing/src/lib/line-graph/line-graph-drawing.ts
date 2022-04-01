@@ -9,7 +9,7 @@ export class LineGraphDrawing extends GraphDrawing {
     super(config);
   }
 
-  mountScopedFrame({
+  override mountScopedFrame({
     image,
     style,
   }: {
@@ -51,7 +51,7 @@ export class LineGraphDrawing extends GraphDrawing {
     return this;
   }
 
-  startProcess(): LineGraphDrawing {
+  override startProcess(): LineGraphDrawing {
     const element = this.getContainerElement()!;
 
     if (!element) throw new Error('The scoped frame is not properly configured');
@@ -86,7 +86,7 @@ export class LineGraphDrawing extends GraphDrawing {
     return this;
   }
 
-  redraw(): void {
+  override redraw(): void {
     const nodes = this.nodes;
     const lines = this.lines;
 
