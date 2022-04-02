@@ -12,7 +12,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/lib/index.ts'),
       name: '@ekisa-cdk/forms',
       formats: ['es'],
-      fileName: 'forms',
+      fileName: 'index',
     },
   },
   plugins: [dts()],

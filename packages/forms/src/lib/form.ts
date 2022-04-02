@@ -25,7 +25,7 @@ export class Form extends AbstractForm {
   }
   //#endregion
 
-  constructor(args: { dataSource: FormControls; plugins: PluginsCollection }) {
+  constructor(args: { dataSource: FormControls; plugins?: PluginsCollection }) {
     super();
 
     this.dataSource = args.dataSource;

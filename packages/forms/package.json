@@ -1,18 +1,21 @@
 {
   "name": "@ekisa-cdk/forms",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "🛠️ Easily build & integrate dynamic forms",
   "license": "MIT",
   "types": "dist/src/lib/index.d.ts",
   "files": [
     "dist"
   ],
-  "main": "./dist/forms.umd.js",
-  "module": "./dist/forms.es.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
   "exports": {
     ".": {
-      "import": "./dist/forms.es.js",
-      "require": "./dist/forms.umd.js"
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    },
+    "./plugins": {
+      "import": "./src/plugins/index.ts"
     }
   },
   "repository": {

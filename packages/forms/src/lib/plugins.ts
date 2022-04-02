@@ -1,4 +1,5 @@
 import { CssPlugin } from './plugins/css.plugin';
+import { EventsPlugin } from './plugins/events.plugin';
 import { ValidationsPlugin } from './plugins/validations.plugin';
 
 /**
@@ -19,7 +20,7 @@ export interface FormPlugin<T = void> {
 /**
  * Single built-in plugin
  */
-export type BuiltInPlugin = ValidationsPlugin | CssPlugin;
+export type BuiltInPlugin = ValidationsPlugin | CssPlugin | EventsPlugin;
 
 /**
  * Collection of built-in plugins that allow to extend form's functionallity
