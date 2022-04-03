@@ -1,0 +1,211 @@
+[
+  {
+    "controlType": "text",
+    "dataField": "activity",
+    "value": null,
+    "label": "Actividad",
+    "placeholder": "Longitud: 5 - 20 characters",
+    "rules": [
+      { "name": "required" },
+      { "name": "minLength", "value": 5 },
+      { "name": "maxLength", "value": 20 }
+    ]
+  },
+  {
+    "controlType": "group",
+    "title": "Información de contacto",
+    "columns": 2,
+    "questions": [
+      {
+        "controlType": "select",
+        "dataField": "documentIdType",
+        "value": null,
+        "label": "Tipo de documento",
+        "selectboxOptions": [
+          { "valueExpr": "", "displayExpr": "-- Seleccionar --" },
+          { "valueExpr": "1", "displayExpr": "Cédula" },
+          { "valueExpr": "2", "displayExpr": "Tarjeta de identidad" }
+        ],
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "text",
+        "dataField": "documentId",
+        "value": null,
+        "label": "Documento",
+        "placeholder": "Número",
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "text",
+        "dataField": "name",
+        "value": null,
+        "label": "Nombres",
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "text",
+        "dataField": "lastname",
+        "value": null,
+        "label": "Apellidos",
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "date",
+        "dataField": "dateOfBirth",
+        "value": null,
+        "label": "Fecha de nacimiento",
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "time",
+        "dataField": "timeOfBirth",
+        "value": null,
+        "label": "Hora de nacimiento",
+        "rules": [{ "name": "required" }]
+      }
+    ]
+  },
+  {
+    "controlType": "group",
+    "title": "Información de contacto",
+    "columns": 2,
+    "questions": [
+      {
+        "controlType": "select",
+        "dataField": "ciudad",
+        "value": null,
+        "label": "Ciudad",
+        "selectboxOptions": [
+          { "valueExpr": "", "displayExpr": "-- Seleccionar --" },
+          { "valueExpr": "1", "displayExpr": "Medellín" },
+          { "valueExpr": "2", "displayExpr": "Cali" },
+          { "valueExpr": "3", "displayExpr": "Bogotá" }
+        ],
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "text",
+        "dataField": "codigoPostal",
+        "value": null,
+        "label": "Código postal",
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "text",
+        "dataField": "email",
+        "value": null,
+        "placeholder": "someone@mail.com",
+        "label": "Correo electrónico",
+        "rules": [{ "name": "required" }, { "name": "email" }]
+      },
+      {
+        "controlType": "text",
+        "dataField": "direccion",
+        "value": null,
+        "label": "Dirección",
+        "rules": [{ "name": "required" }]
+      }
+    ]
+  },
+  {
+    "controlType": "group",
+    "title": "Información académica",
+    "columns": 2,
+    "questions": [
+      {
+        "controlType": "select",
+        "dataField": "program",
+        "value": null,
+        "label": "Programa",
+        "selectboxOptions": [
+          { "valueExpr": "", "displayExpr": "-- Seleccionar --" },
+          { "valueExpr": "1", "displayExpr": "Derecho" },
+          { "valueExpr": "2", "displayExpr": "Matemáticas" },
+          { "valueExpr": "3", "displayExpr": "Ing. Sistemas" },
+          { "valueExpr": "4", "displayExpr": "Ing. Química" }
+        ],
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "number",
+        "dataField": "semester",
+        "value": null,
+        "label": "Semestre",
+        "rules": [
+          { "name": "required" },
+          { "name": "min", "value": 1 },
+          { "name": "max", "value": 10 }
+        ]
+      }
+    ]
+  },
+  {
+    "controlType": "group",
+    "title": "Notificaciones y política de tratamiento de datos",
+    "questions": [
+      {
+        "controlType": "checkbox",
+        "dataField": "aceptaTratamientoDatos",
+        "value": null,
+        "label": "Acepta nuestra política de tratamiento de datos",
+        "rules": [{ "name": "requiredTrue" }]
+      },
+      {
+        "controlType": "checkbox",
+        "dataField": "aceptaEnvioNotificaciones",
+        "value": null,
+        "label": "Acepta que le enviemos notificaciones del proceso"
+      },
+      {
+        "controlType": "radio",
+        "dataField": "metodoNotificaciones",
+        "value": null,
+        "label": "Seleccione el método de atención favorito",
+        "radioOptions": [
+          {
+            "valueExpr": "email",
+            "displayExpr": "✉️ Email"
+          },
+          {
+            "valueExpr": "whatsapp",
+            "displayExpr": "🤳 Whatsapp"
+          },
+          {
+            "valueExpr": "llamada",
+            "displayExpr": "📞 Llamada"
+          }
+        ],
+        "rules": [{ "name": "required" }]
+      }
+    ]
+  },
+  {
+    "controlType": "group",
+    "title": "Feedback",
+    "questions": [
+      {
+        "controlType": "radio",
+        "dataField": "satisfaccion",
+        "value": null,
+        "label": "Seleccione el nivel de satisfacción",
+        "radioOptions": [
+          { "valueExpr": "1", "displayExpr": "⭐" },
+          { "valueExpr": "2", "displayExpr": "⭐⭐" },
+          { "valueExpr": "3", "displayExpr": "⭐⭐⭐" },
+          { "valueExpr": "4", "displayExpr": "⭐⭐⭐⭐" },
+          { "valueExpr": "5", "displayExpr": "⭐⭐⭐⭐⭐" }
+        ],
+        "rules": [{ "name": "required" }]
+      },
+      {
+        "controlType": "textarea",
+        "dataField": "observaciones",
+        "value": null,
+        "label": "Observaciones",
+        "placeholder": "¿Cómo podemos mejorar? 🤔",
+        "rules": [{ "name": "required" }]
+      }
+    ]
+  }
+]

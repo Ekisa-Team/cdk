@@ -1,18 +1,19 @@
 {
   "name": "@ekisa-cdk/forms",
-  "version": "0.0.0",
+  "version": "0.0.7",
   "description": "🛠️ Easily build & integrate dynamic forms",
   "license": "MIT",
-  "types": "dist/src/lib/index.d.ts",
   "files": [
     "dist"
   ],
-  "main": "./dist/forms.umd.js",
-  "module": "./dist/forms.es.js",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/forms.es.js",
-      "require": "./dist/forms.umd.js"
+      "require": "./dist/index.mjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "repository": {
@@ -30,11 +31,8 @@
     "Dynamic forms"
   ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "vite": "^2.8.0"
+    "dev": "unbuild --stub",
+    "build": "rimraf dist && unbuild",
+    "release": "bumpp --commit --push --tag && pnpm publish"
   }
 }
