@@ -36,7 +36,7 @@ export class Form extends AbstractForm {
    * Render dynamic form inside parent element
    * @param parent HTML element where the form will be rendered
    */
-  override render(parent: HTMLBodyElement | HTMLDivElement): void {
+  render(parent: HTMLBodyElement | HTMLDivElement): void {
     const form = renderUtils.buildForm(this.dataSource);
     parent.append(form);
 
@@ -48,7 +48,7 @@ export class Form extends AbstractForm {
   /**
    * Reset form elements to defaults
    */
-  override reset(): void {
+  reset(): void {
     throw new Error('Method not implemented.');
   }
 
@@ -56,7 +56,7 @@ export class Form extends AbstractForm {
    * Check validity of all control's configured validators
    * @returns ValidationOutput or null if no errors are found
    */
-  override validate(): ValidationOutput {
+  validate(): ValidationOutput {
     const errors: ValidationOutput = [];
     const controls = this.controls;
 

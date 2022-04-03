@@ -13,5 +13,7 @@ export abstract class AbstractForm {
 
   abstract validate(): ValidationOutput;
 
+  abstract validateControl(controlKey: string): ValidationOutput;
+
   abstract toJSON<T>(): T;
 }
