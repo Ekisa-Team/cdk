@@ -1,5 +1,4 @@
 import { AutoMapperPlugin } from './plugins/auto-mapper.plugin';
-import { CssPlugin } from './plugins/css.plugin';
 import { EventsPlugin } from './plugins/events.plugin';
 import { ValidationsPlugin } from './plugins/validations.plugin';
 
@@ -21,7 +20,7 @@ export interface FormPlugin<T = void, U = void> {
 /**
  * Single built-in plugin
  */
-export type BuiltInPlugin = ValidationsPlugin | CssPlugin | EventsPlugin | AutoMapperPlugin<void>;
+export type BuiltInPlugin = ValidationsPlugin | EventsPlugin | AutoMapperPlugin<void>;
 
 /**
  * Collection of built-in plugins that allow to extend form's functionallity

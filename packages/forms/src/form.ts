@@ -4,7 +4,6 @@ import { FieldSet } from './controls';
 import { AbstractControl } from './controls/abstract-control';
 import { FormControlType } from './enums/form-control-type.enum';
 import { findPlugin, PluginsCollection } from './plugins';
-import { CssPlugin } from './plugins/css.plugin';
 import { ValidationsPlugin } from './plugins/validations.plugin';
 import { FormControls } from './types/form-control.type';
 
@@ -39,10 +38,6 @@ export class Form extends AbstractForm {
   render(parent: HTMLBodyElement | HTMLDivElement): void {
     const form = renderUtils.buildForm(this.dataSource);
     parent.append(form);
-
-    // Activate StylesPlugin if it's found
-    const plugin = findPlugin(this.plugins, CssPlugin);
-    plugin?.run(form);
   }
 
   /**
