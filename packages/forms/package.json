@@ -1,6 +1,6 @@
 {
   "name": "@ekisa-cdk/forms",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "🛠️ Easily build & integrate dynamic forms",
   "license": "MIT",
   "files": [
