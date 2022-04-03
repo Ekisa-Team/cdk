@@ -66,7 +66,7 @@ export class FormsService {
 
   constructor(private _httpClient: HttpClient) {}
 
-  getFormData(db: 'activity'): Observable<MyFormModel> {
+  getFormData(db: string): Observable<MyFormModel> {
     return this._httpClient.get<MyFormModel>(`./assets/db/${db}.mock.json`);
   }
 }

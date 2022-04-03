@@ -33,6 +33,6 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "rimraf dist && unbuild",
-    "release": "bumpp --commit --push && npm publish --access public"
+    "release": "npm publish --access public"
   }
 }
