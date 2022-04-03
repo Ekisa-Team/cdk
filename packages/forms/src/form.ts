@@ -2,7 +2,6 @@ import { AbstractForm, ValidationOutput } from './abstract-form';
 import renderUtils from './builder';
 import { FieldSet } from './controls';
 import { AbstractControl } from './controls/abstract-control';
-import { FormControlType } from './enums/form-control-type.enum';
 import { findPlugin, PluginsCollection } from './plugins';
 import { ValidationsPlugin } from './plugins/validations.plugin';
 import { FormControls } from './types/form-control.type';
@@ -129,7 +128,7 @@ export class Form extends AbstractForm {
     let result: Array<AbstractControl | FieldSet> = [];
 
     for (const c of controls) {
-      if (c.type === FormControlType.FieldSet) {
+      if (c.type === 'FieldSet') {
         const children = (c as unknown as FieldSet).children;
 
         if (includeParents) {

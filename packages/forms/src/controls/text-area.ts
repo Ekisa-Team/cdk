@@ -1,9 +1,9 @@
-import { FormControlType } from '../enums/form-control-type.enum';
+import { FormControlType } from '../types/form-control-type.enum';
 import { ValidatorFn } from '../validators';
 import { AbstractControl } from './abstract-control';
 
 export class TextArea extends AbstractControl {
-  override type = FormControlType.TextArea;
+  override type: FormControlType = 'TextArea';
   override key: string;
   override value: string | null;
   override label: string | undefined;

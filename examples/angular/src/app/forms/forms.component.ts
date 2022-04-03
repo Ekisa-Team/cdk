@@ -4,7 +4,6 @@ import {
   AutoMapperPlugin,
   EventsPlugin,
   Form,
-  FormControlType,
   ValidationsPlugin,
 } from '@ekisa-cdk/forms';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -57,6 +56,9 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Setup dynamic form initialization
+   */
   private _initializeForm(questions: MyFormModel) {
     const mapper = new AutoMapperPlugin<MyQuestionType>(
       questions,
@@ -94,17 +96,14 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
     const eventsPlugin = new EventsPlugin();
 
     this._form.controls.forEach((control) => {
-      if (control.type === FormControlType.RadioGroup) {
+      if (control.type === 'RadioGroup') {
         eventsPlugin.run({
           targetKey: control.key,
           attachmentType: 'multiple',
           on: 'change',
           runFn: () => this._checkControlValidity(control),
         });
-      } else if (
-        control.type === FormControlType.TextBox ||
-        control.type === FormControlType.TextArea
-      ) {
+      } else if (control.type === 'TextBox' || control.type === 'TextArea') {
         eventsPlugin.run({
           targetKey: control.key,
           attachmentType: 'single',

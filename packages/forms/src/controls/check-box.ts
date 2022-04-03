@@ -1,9 +1,9 @@
-import { FormControlType } from '../enums/form-control-type.enum';
+import { FormControlType } from '../types/form-control-type.enum';
 import { ValidatorFn } from '../validators';
 import { AbstractControl } from './abstract-control';
 
 export class CheckBox extends AbstractControl {
-  override type = FormControlType.CheckBox;
+  override type: FormControlType = 'CheckBox';
   override key: string;
   override value: boolean | null;
   override label: string;

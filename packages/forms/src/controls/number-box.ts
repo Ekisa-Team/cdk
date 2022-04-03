@@ -1,9 +1,9 @@
-import { FormControlType } from '../enums/form-control-type.enum';
+import { FormControlType } from '../types/form-control-type.enum';
 import { ValidatorFn } from '../validators';
 import { AbstractControl } from './abstract-control';
 
 export class NumberBox extends AbstractControl {
-  override type = FormControlType.NumberBox;
+  override type: FormControlType = 'NumberBox';
   override key: string;
   override value: number | null;
   override label: string | undefined;

@@ -11,8 +11,8 @@ import {
   TextBox,
   TimePicker,
 } from '../controls';
-import { FormControlType } from '../enums/form-control-type.enum';
 import { FormPlugin } from '../plugins';
+import { FormControlType } from '../types/form-control-type.enum';
 import { FormControls } from '../types/form-control.type';
 import { ValidatorFn, Validators } from '../validators';
 

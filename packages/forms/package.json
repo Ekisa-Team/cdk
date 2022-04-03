@@ -8,10 +8,13 @@
   ],
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.mjs",
-    "./plugins": "./dist/plugins/index.mjs"
+    ".": {
+      "require": "./dist/index.mjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "repository": {
     "type": "git",

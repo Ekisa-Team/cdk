@@ -1,4 +1,4 @@
-import { FormControlType } from '../enums/form-control-type.enum';
+import { FormControlType } from '../types/form-control-type.enum';
 import { ValidationErrors, ValidatorFn } from '../validators';
 
 export abstract class AbstractControl {

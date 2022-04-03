@@ -1,9 +1,9 @@
-import { FormControlType } from '../enums/form-control-type.enum';
 import { Columns } from '../types/columns.type';
+import { FormControlType } from '../types/form-control-type.enum';
 import { FormControls } from '../types/form-control.type';
 
 export class FieldSet {
-  type = FormControlType.FieldSet;
+  type: FormControlType = 'FieldSet';
   legend: string | undefined;
   cols: Columns | undefined;
   children: FormControls = [];

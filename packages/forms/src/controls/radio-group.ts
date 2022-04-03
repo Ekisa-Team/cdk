@@ -1,4 +1,4 @@
-import { FormControlType } from '../enums/form-control-type.enum';
+import { FormControlType } from '../types/form-control-type.enum';
 import { ValidatorFn } from '../validators';
 import { AbstractControl } from './abstract-control';
 
@@ -8,7 +8,7 @@ export type RadioGroupItem = {
 };
 
 export class RadioGroup extends AbstractControl {
-  override type = FormControlType.RadioGroup;
+  override type: FormControlType = 'RadioGroup';
   override key: string;
   override value: string | null;
   override validators: ValidatorFn[];

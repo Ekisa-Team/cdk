@@ -1,4 +1,4 @@
-import { FormControlType } from '../enums/form-control-type.enum';
+import { FormControlType } from '../types/form-control-type.enum';
 import { ValidatorFn } from '../validators';
 import { AbstractControl } from './abstract-control';
 
@@ -9,7 +9,7 @@ export type SelectBoxOption = {
 };
 
 export class SelectBox extends AbstractControl {
-  override type = FormControlType.SelectBox;
+  override type: FormControlType = 'SelectBox';
   override key: string;
   override value: string | null;
   override label: string | undefined;

@@ -1,4 +1,5 @@
 import {
+  AbstractControl,
   CheckBox,
   DatePicker,
   FieldSet,
@@ -9,7 +10,7 @@ import {
   TextBox,
   TimePicker,
 } from './controls';
-import { FormControlType } from './enums/form-control-type.enum';
+import { FormControlType } from './types/form-control-type.enum';
 import { FormControls } from './types/form-control.type';
 
 /**
@@ -19,7 +20,7 @@ import { FormControls } from './types/form-control.type';
  */
 const buildTextBox = (config: TextBox): HTMLInputElement => {
   const input = document.createElement('input');
-  input.dataset.unitType = FormControlType.TextBox;
+  input.dataset.unitType = 'TextBox';
   input.type = 'text';
   input.id = config.key;
   input.name = config.key;
@@ -36,7 +37,7 @@ const buildTextBox = (config: TextBox): HTMLInputElement => {
  */
 const buildTextArea = (config: TextArea): HTMLTextAreaElement => {
   const textarea = document.createElement('textarea');
-  textarea.dataset.unitType = FormControlType.TextArea;
+  textarea.dataset.unitType = 'TextArea';
   textarea.id = config.key;
   textarea.name = config.key;
   textarea.placeholder = config.placeholder ?? '';
@@ -62,7 +63,7 @@ const buildTextArea = (config: TextArea): HTMLTextAreaElement => {
  */
 const buildNumberBox = (config: NumberBox): HTMLInputElement => {
   const input = document.createElement('input');
-  input.dataset.unitType = FormControlType.NumberBox;
+  input.dataset.unitType = 'NumberBox';
   input.id = config.key;
   input.name = config.key;
   input.type = 'number';
@@ -92,14 +93,14 @@ const buildNumberBox = (config: NumberBox): HTMLInputElement => {
  */
 const buildSelectBox = (config: SelectBox): HTMLSelectElement => {
   const select = document.createElement('select');
-  select.dataset.unitType = FormControlType.SelectBox;
+  select.dataset.unitType = 'SelectBox';
   select.id = config.key;
   select.name = config.key;
 
   // Loop through select box options & assign attributes
   for (const opt of config.options) {
     const option = document.createElement('option');
-    option.dataset.unitType = FormControlType.SelectBox + 'Option';
+    option.dataset.unitType = 'SelectBox' + 'Option';
     option.value = opt.value;
     option.text = opt.text;
     select.append(option);
@@ -120,14 +121,14 @@ const buildSelectBox = (config: SelectBox): HTMLSelectElement => {
  */
 const buildCheckBox = (config: CheckBox): HTMLDivElement => {
   const input = document.createElement('input');
-  input.dataset.unitType = FormControlType.CheckBox + 'Item';
+  input.dataset.unitType = 'CheckBox' + 'Item';
   input.id = config.key;
   input.name = config.key;
   input.type = 'checkbox';
   input.checked = config.value ?? false;
 
   const itemWrapper = document.createElement('div');
-  itemWrapper.dataset.unitType = FormControlType.CheckBox + 'ItemWrapper';
+  itemWrapper.dataset.unitType = 'CheckBox' + 'ItemWrapper';
   itemWrapper.append(input);
   itemWrapper.append(buildLabel(config.label, config.key));
 
@@ -141,13 +142,13 @@ const buildCheckBox = (config: CheckBox): HTMLDivElement => {
  */
 const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
   const wrapper = document.createElement('div');
-  wrapper.dataset.unitType = FormControlType.RadioGroup;
+  wrapper.dataset.unitType = 'RadioGroup';
   wrapper.id = config.key;
 
   // Configure main radio group text
   if (config.text) {
     const p = document.createElement('p');
-    p.dataset.unitType = FormControlType.RadioGroup + 'Text';
+    p.dataset.unitType = 'RadioGroup' + 'Text';
     p.textContent = config.text;
     wrapper.append(p);
   }
@@ -159,7 +160,7 @@ const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
 
     // Radio item
     const input = document.createElement('input');
-    input.dataset.unitType = FormControlType.RadioGroup + 'Item';
+    input.dataset.unitType = 'RadioGroup' + 'Item';
     input.type = 'radio';
     input.id = id;
     input.name = config.key;
@@ -167,7 +168,7 @@ const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
 
     // Radio item wrapper
     const itemWrapper = document.createElement('div');
-    itemWrapper.dataset.unitType = FormControlType.RadioGroup + 'ItemWrapper';
+    itemWrapper.dataset.unitType = 'RadioGroup' + 'ItemWrapper';
     itemWrapper.append(input);
     itemWrapper.append(buildLabel(item.label, id));
 
@@ -197,7 +198,7 @@ const buildRadioGroup = (config: RadioGroup): HTMLDivElement => {
  */
 const buildDatePicker = (config: DatePicker): HTMLInputElement => {
   const input = document.createElement('input');
-  input.dataset.unitType = FormControlType.DatePicker;
+  input.dataset.unitType = 'DatePicker';
   input.id = config.key;
   input.name = config.key;
   input.type = 'date';
@@ -212,7 +213,7 @@ const buildDatePicker = (config: DatePicker): HTMLInputElement => {
  */
 const buildTimePicker = (config: TimePicker): HTMLInputElement => {
   const input = document.createElement('input');
-  input.dataset.unitType = FormControlType.TimePicker;
+  input.dataset.unitType = 'TimePicker';
   input.id = config.key;
   input.name = config.key;
   input.type = 'time';
@@ -230,7 +231,6 @@ const buildWrapper = (controlFor: FormControlType): HTMLDivElement => {
   div.dataset.for = controlFor;
   return div;
 };
-
 /**
  * Build form control label & configure it
  * @param text label's text contet
@@ -252,12 +252,12 @@ const buildLabel = (text: string, htmlFor = ''): HTMLLabelElement => {
  */
 const buildFieldSet = (config: FieldSet): HTMLFieldSetElement => {
   const fieldset = document.createElement('fieldset');
-  fieldset.dataset.unitType = FormControlType.FieldSet;
+  fieldset.dataset.unitType = 'FieldSet';
 
   // Configure legend attribute
   if (config.legend) {
     const legend = document.createElement('legend');
-    legend.dataset.unitType = FormControlType.FieldSet + 'Legend';
+    legend.dataset.unitType = 'FieldSet' + 'Legend';
     legend.textContent = config.legend;
     fieldset.append(legend);
   }
@@ -293,67 +293,71 @@ const buildForm = (controls: FormControls): HTMLFormElement => {
  */
 function render<T extends HTMLElement>(target: T, controls: FormControls): T {
   for (const control of controls) {
-    const wrapper = buildWrapper(control.type);
+    if (control.type === 'FieldSet') {
+      target.append(buildFieldSet(control as FieldSet));
+    } else {
+      const wrapper = buildWrapper(control.type);
 
-    if (control.label && control.type !== FormControlType.CheckBox) {
-      const label = buildLabel(control.label, control.key);
-      wrapper.append(label);
-    }
+      if (control.type !== 'CheckBox' && (control as AbstractControl).label) {
+        const label = buildLabel(
+          (control as AbstractControl).label || '',
+          (control as AbstractControl).key,
+        );
+        wrapper.append(label);
+      }
 
-    switch (control.type) {
-      case FormControlType.FieldSet:
-        target.append(buildFieldSet(control as FieldSet));
-        break;
-      case FormControlType.TextBox:
-        {
-          wrapper.append(buildTextBox(control as TextBox));
-          target.append(wrapper);
-        }
-        break;
-      case FormControlType.TextArea:
-        {
-          wrapper.append(buildTextArea(control as TextArea));
-          target.append(wrapper);
-        }
-        break;
-      case FormControlType.NumberBox:
-        {
-          wrapper.append(buildNumberBox(control as NumberBox));
-          target.append(wrapper);
-        }
-        break;
-      case FormControlType.SelectBox:
-        {
-          wrapper.append(buildSelectBox(control as SelectBox));
-          target.append(wrapper);
-        }
-        break;
-      case FormControlType.CheckBox:
-        {
-          wrapper.append(buildCheckBox(control as CheckBox));
-          target.append(wrapper);
-        }
-        break;
-      case FormControlType.RadioGroup:
-        {
-          wrapper.append(buildRadioGroup(control as RadioGroup));
-          target.append(wrapper);
-        }
-        break;
-      case FormControlType.DatePicker:
-        {
-          wrapper.append(buildDatePicker(control as DatePicker));
-          target.append(wrapper);
-        }
-        break;
-      case FormControlType.TimePicker:
-        {
-          wrapper.append(buildTimePicker(control as TimePicker));
-          target.append(wrapper);
-        }
-        break;
-      default:
-        throw new Error('Form control is not yet supported');
+      switch (control.type) {
+        case 'TextBox':
+          {
+            wrapper.append(buildTextBox(control as TextBox));
+            target.append(wrapper);
+          }
+          break;
+        case 'TextArea':
+          {
+            wrapper.append(buildTextArea(control as TextArea));
+            target.append(wrapper);
+          }
+          break;
+        case 'NumberBox':
+          {
+            wrapper.append(buildNumberBox(control as NumberBox));
+            target.append(wrapper);
+          }
+          break;
+        case 'SelectBox':
+          {
+            wrapper.append(buildSelectBox(control as SelectBox));
+            target.append(wrapper);
+          }
+          break;
+        case 'CheckBox':
+          {
+            wrapper.append(buildCheckBox(control as CheckBox));
+            target.append(wrapper);
+          }
+          break;
+        case 'RadioGroup':
+          {
+            wrapper.append(buildRadioGroup(control as RadioGroup));
+            target.append(wrapper);
+          }
+          break;
+        case 'DatePicker':
+          {
+            wrapper.append(buildDatePicker(control as DatePicker));
+            target.append(wrapper);
+          }
+          break;
+        case 'TimePicker':
+          {
+            wrapper.append(buildTimePicker(control as TimePicker));
+            target.append(wrapper);
+          }
+          break;
+        default:
+          throw new Error('Form control is not yet supported');
+      }
     }
   }
 

@@ -1,9 +1,9 @@
-import { FormControlType } from '../enums/form-control-type.enum';
+import { FormControlType } from '../types/form-control-type.enum';
 import { ValidatorFn } from '../validators';
 import { AbstractControl } from './abstract-control';
 
 export class DatePicker extends AbstractControl {
-  override type = FormControlType.DatePicker;
+  override type: FormControlType = 'DatePicker';
   override key: string;
   override value: Date | null;
   override label: string | undefined;
