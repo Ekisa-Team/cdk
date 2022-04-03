@@ -5,7 +5,6 @@ export abstract class AbstractControl {
   value: unknown | null;
   key: string;
   label: string | undefined;
-  order: number;
   type: FormControlType | undefined;
   validators: ValidatorFn[];
 
@@ -36,7 +35,6 @@ export abstract class AbstractControl {
     this.value = value;
     this.key = options.key;
     this.label = options.label;
-    this.order = options.order ?? 1;
     this.type = options.type;
     this.validators = options.validators || [];
   }
