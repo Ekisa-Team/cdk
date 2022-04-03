@@ -1,6 +1,6 @@
 {
   "name": "@ekisa-cdk/forms",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "🛠️ Easily build & integrate dynamic forms",
   "license": "MIT",
   "files": [
@@ -33,6 +33,6 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "rimraf dist && unbuild",
-    "release": "bumpp --commit --push --tag && pnpm publish"
+    "release": "npm publish --access public"
   }
 }

@@ -14,22 +14,7 @@ import { Component } from '@angular/core';
       <router-outlet></router-outlet>
     </div>
   `,
-  styles: [
-    `
-      nav {
-        display: flex;
-        align-items: center;
-        height: 70px;
-        background: var(--color-gray-900);
-        margin-bottom: 2rem;
-      }
-
-      nav a {
-        color: var(--color-gray-300);
-        margin-right: 1rem;
-      }
-    `,
-  ],
+  styles: [],
 })
 export class AppComponent {
   title = 'angular';

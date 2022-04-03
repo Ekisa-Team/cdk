@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   AbstractControl,
   AutoMapperPlugin,
@@ -25,14 +26,17 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
   questions$!: Observable<MyFormModel>;
   destroy$ = new Subject();
 
+  formName!: string;
   submitted = false;
 
   private _form!: Form;
 
-  constructor(private formsService: FormsService) {}
+  constructor(private _activatedRoute: ActivatedRoute, private _formsService: FormsService) {
+    this.formName = this._activatedRoute.snapshot.paramMap.get('formName') || '';
+  }
 
   ngOnInit(): void {
-    this.questions$ = this.formsService.getFormData('activity');
+    this.questions$ = this._formsService.getFormData(this.formName);
   }
 
   ngOnDestroy(): void {
@@ -64,7 +68,7 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const mapper = new AutoMapperPlugin<MyQuestionType>(
       questions,
-      this.formsService.mappingProfile,
+      this._formsService.mappingProfile,
     );
 
     const dataSource = mapper.run();

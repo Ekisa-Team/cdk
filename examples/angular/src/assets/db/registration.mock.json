@@ -1,0 +1,112 @@
+[
+  {
+    "controlType": "group",
+    "title": "Sign up as Diagnostic Lab",
+    "questions": [
+      {
+        "controlType": "group",
+        "questions": [
+          {
+            "controlType": "text",
+            "dataField": "labName",
+            "value": null,
+            "label": "Lab name",
+            "placeholder": "Enter your laboratory name",
+            "rules": [{ "name": "required" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "controlType": "group",
+    "columns": 2,
+    "questions": [
+      {
+        "controlType": "group",
+        "questions": [
+          {
+            "controlType": "text",
+            "dataField": "name",
+            "value": null,
+            "label": "Your Name",
+            "placeholder": "Enter your name",
+            "rules": [{ "name": "required" }]
+          }
+        ]
+      },
+      {
+        "controlType": "group",
+        "questions": [
+          {
+            "controlType": "text",
+            "dataField": "role",
+            "value": null,
+            "label": "Your role",
+            "placeholder": "Enter your role in the lab",
+            "rules": [{ "name": "required" }]
+          }
+        ]
+      },
+      {
+        "controlType": "group",
+        "questions": [
+          {
+            "controlType": "text",
+            "dataField": "dailyPathologyReports",
+            "value": null,
+            "label": "Daily pathology reports",
+            "placeholder": "Number of reports",
+            "rules": [{ "name": "required" }]
+          }
+        ]
+      },
+      {
+        "controlType": "group",
+        "questions": [
+          {
+            "controlType": "text",
+            "dataField": "dailyRadiologyReports",
+            "value": null,
+            "label": "Daily radiology reports",
+            "placeholder": "Number of reports",
+            "rules": [{ "name": "required" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "controlType": "group",
+    "questions": [
+      {
+        "controlType": "group",
+        "questions": [
+          {
+            "controlType": "text",
+            "dataField": "mobileNumber",
+            "value": null,
+            "label": "Mobile number",
+            "placeholder": "Enter your mobile number",
+            "rules": [{ "name": "required" }]
+          },
+          {
+            "controlType": "text",
+            "dataField": "labAddress",
+            "value": null,
+            "label": "Address",
+            "placeholder": "Enter lab address",
+            "rules": [{ "name": "required" }]
+          },
+          {
+            "controlType": "checkbox",
+            "dataField": "agreeTerms",
+            "value": null,
+            "label": "I agree with all Terms and Conditions",
+            "rules": [{ "name": "requiredTrue" }]
+          }
+        ]
+      }
+    ]
+  }
+]
