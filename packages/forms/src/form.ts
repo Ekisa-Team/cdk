@@ -112,7 +112,7 @@ export class Form extends AbstractForm {
    * Convert controls values to JSON format
    * @returns specified generic type
    */
-  override toJSON<T>(): T {
+  toJSON<T>(): T {
     const formData: Record<string, unknown> = {};
 
     this.controls.forEach((c) => {
