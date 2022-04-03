@@ -60,6 +60,8 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
    * Setup dynamic form initialization
    */
   private _initializeForm(questions: MyFormModel) {
+    console.time('form_initialization');
+
     const mapper = new AutoMapperPlugin<MyQuestionType>(
       questions,
       this.formsService.mappingProfile,
@@ -85,6 +87,10 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this._form.render(this.formContainer.nativeElement);
     this._initializeValidationEvents();
+
+    console.timeEnd('form_initialization');
+
+    console.log(this._form.controls.length);
   }
 
   /**
