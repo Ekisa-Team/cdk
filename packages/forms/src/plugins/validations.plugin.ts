@@ -32,13 +32,11 @@ export class ValidationsPlugin implements FormPlugin<ValidationOutput> {
     if (!validations) return;
 
     for (const val of validations) {
-      const parent = val.control
-        .getElement()
-        ?.closest('[data-unit-type="Wrapper"]') as HTMLDivElement;
+      const parent = val.control.getParentElement();
 
       if (!parent) return;
 
-      parent?.querySelector('[data-unit-type="ValidationsWrapper"]')?.remove();
+      val.control.getValidationsElement()?.remove();
       const errorsWrapper = document.createElement(this._parentElement);
       errorsWrapper.dataset.unitType = 'ValidationsWrapper';
 
