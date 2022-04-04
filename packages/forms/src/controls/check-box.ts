@@ -21,7 +21,13 @@ export class CheckBox extends AbstractControl {
   }
 
   override getValue(): boolean {
-    const node = document.querySelector(`#${this.key}`) as HTMLInputElement | null;
+    const node = this.getElement() as HTMLInputElement | null;
     return node?.checked || false;
+  }
+
+  override setValue(value: boolean): void {
+    const node = this.getElement() as HTMLInputElement | null;
+    if (!node) return;
+    node.checked = value;
   }
 }

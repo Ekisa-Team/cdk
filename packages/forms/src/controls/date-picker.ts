@@ -21,7 +21,13 @@ export class DatePicker extends AbstractControl {
   }
 
   override getValue(): Date | null {
-    const node = document.querySelector(`#${this.key}`) as HTMLInputElement | null;
+    const node = this.getElement() as HTMLInputElement | null;
     return node?.valueAsDate || null;
+  }
+
+  override setValue(value: Date): void {
+    const node = this.getElement() as HTMLInputElement | null;
+    if (!node) return;
+    node.valueAsDate = value;
   }
 }

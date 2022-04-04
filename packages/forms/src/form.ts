@@ -1,6 +1,6 @@
 import { AbstractForm, ValidationOutput } from './abstract-form';
 import renderUtils from './builder';
-import { FieldSet } from './controls';
+import { FieldSet, RadioGroup } from './controls';
 import { AbstractControl } from './controls/abstract-control';
 import { findPlugin, PluginsCollection } from './plugins';
 import { ValidationsPlugin } from './plugins/validations.plugin';
@@ -17,17 +17,26 @@ export class Form extends AbstractForm {
    */
   plugins: PluginsCollection;
 
+  private _controls: Array<AbstractControl> = [];
+
   //#region Accesors
   get controls(): Array<AbstractControl> {
-    return this._flattenControls(this.dataSource) as Array<AbstractControl>;
+    return this._controls;
   }
   //#endregion
 
   constructor(args: { dataSource: FormControls; plugins?: PluginsCollection }) {
     super();
-
     this.dataSource = args.dataSource;
     this.plugins = args.plugins || [];
+  }
+
+  /**
+   * Get form control
+   * @param key control key identifier
+   */
+  getControl(key: string): AbstractControl | undefined {
+    return this._controls.find((control) => control.key === key);
   }
 
   /**
@@ -37,13 +46,38 @@ export class Form extends AbstractForm {
   render(parent: HTMLBodyElement | HTMLDivElement): void {
     const form = renderUtils.buildForm(this.dataSource);
     parent.append(form);
+    this._controls = this._flattenControls(this.dataSource) as Array<AbstractControl>;
   }
 
   /**
    * Reset form elements to defaults
    */
   reset(): void {
-    throw new Error('Method not implemented.');
+    this.controls.forEach((control) => {
+      // Reset controls value based on type
+      switch (control.type) {
+        case 'CheckBox':
+          control.setValue(false);
+          break;
+        case 'DatePicker':
+        case 'TimePicker':
+        case 'NumberBox':
+          control.setValue(null);
+          break;
+        case 'RadioGroup':
+          (control as RadioGroup).reset();
+          break;
+        default:
+          control.setValue('');
+      }
+
+      // Remove control status
+      const parent = control.getParentElement()!;
+      delete parent.dataset.status;
+
+      // Remove validations container
+      control.getValidationsElement()?.remove();
+    });
   }
 
   /**

@@ -37,4 +37,20 @@ export class RadioGroup extends AbstractControl {
 
     return node?.value || null;
   }
+
+  override setValue(value: string): void {
+    const node = Array.from<HTMLInputElement>(
+      document.querySelectorAll(`[name=${this.key}]`),
+    )?.find((n) => n.value === value) as HTMLInputElement | null;
+
+    if (!node) return;
+
+    node.checked = true;
+  }
+
+  reset() {
+    Array.from<HTMLInputElement>(document.querySelectorAll(`[name=${this.key}]`))?.forEach(
+      (n) => (n.checked = false),
+    );
+  }
 }

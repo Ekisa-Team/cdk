@@ -3,7 +3,7 @@
 :root {
   /* colors */
   --color-primary: #1c70ff;
-  --color-secondary: #f9fafb;
+  --color-secondary: #e6e6e6;
 
   --text-color: #374151;
 
@@ -117,15 +117,14 @@ body {
   align-items: center;
   justify-content: flex-end;
   padding: 1rem;
-  background-color: var(--color-secondary);
 }
 
 .btn {
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   border-radius: var(--rounded);
   border: solid 1px transparent;
   box-shadow: var(--shadow);
-  color: #fff;
+  color: var(--text-color);
   cursor: pointer;
   display: inline-flex;
   font-size: var(--text-sm);
@@ -142,4 +141,9 @@ body {
   filter: brightness(90%);
   outline: var(--ring);
   outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #fff;
 }

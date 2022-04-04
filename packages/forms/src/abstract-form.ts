@@ -7,6 +7,8 @@ export type ValidationOutput = Array<{
 }> | null;
 
 export abstract class AbstractForm {
+  abstract getControl(key: string): AbstractControl | undefined;
+
   abstract render(parent: HTMLBodyElement | HTMLDivElement): void;
 
   abstract reset(): void;

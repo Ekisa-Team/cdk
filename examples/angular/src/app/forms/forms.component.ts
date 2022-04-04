@@ -15,7 +15,8 @@ import { MyFormModel, MyQuestionType } from './models/mock.model';
   template: `
     <div #formContainer></div>
     <div class="actions-container">
-      <button class="btn" (click)="handleSaveClick()">Save</button>
+      <button class="btn" style="margin-right: 1rem;" (click)="handleResetClick()">Reset</button>
+      <button class="btn btn-primary" (click)="handleSaveClick()">Save</button>
     </div>
   `,
   styleUrls: ['./forms.component.css'],
@@ -58,6 +59,10 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
     if (errors === null) {
       console.log(this._form.toJSON());
     }
+  }
+
+  handleResetClick() {
+    this._form.getControl('semester')?.setValue(null);
   }
 
   /**
