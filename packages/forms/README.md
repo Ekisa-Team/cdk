@@ -568,7 +568,7 @@ You can easily create a plugin that extends the form functionality and solves a 
 
 **Usage**
 
-To create a custom plugin you just need to define a new class and implement de FormPlugin interface
+To create a custom plugin you just need to define a new class and implement the FormPlugin interface
 
 ```ts
 import { FormPlugin } from '@ekisa-cdk/forms';
