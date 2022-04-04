@@ -47,7 +47,7 @@ export class Form extends AbstractForm {
   }
 
   /**
-   * Check validity of all control's configured validators
+   * Check the validity of all the configured control validators
    * @returns ValidationOutput or null if no errors are found
    */
   validate(): ValidationOutput {
@@ -77,7 +77,7 @@ export class Form extends AbstractForm {
   }
 
   /**
-   * Check validity of a single control's configured validators
+   * Check the validity of a single configured control validators
    * @returns ValidationOutput or null if no errors are found
    */
   validateControl(key: string): ValidationOutput {
