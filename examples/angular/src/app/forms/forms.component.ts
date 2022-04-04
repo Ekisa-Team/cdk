@@ -62,7 +62,7 @@ export class FormsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   handleResetClick() {
-    this._form.getControl('semester')?.setValue(null);
+    this._form.reset();
   }
 
   /**
