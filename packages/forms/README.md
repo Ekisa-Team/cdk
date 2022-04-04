@@ -327,7 +327,7 @@ Check the official **[ValidationsPlugin](https://github.com/Ekisa-Team/cdk/blob/
 
 ## **Plugins**
 
-Plugins are building blocks that extend the form functionality. @ekisa/forms come with built-in plugins that solve different purposes and make the integration process seamlessly. There are two types of plugins: internal and external. Internal plugins will run inside the codebase and cannot be modified, although they could be rewritten as custom plugins but would probably need more logic on the implementation side because external plugins cannot listen for events that occur inside the form class. All internal plugins must be passed to the class constructor at the instantiation moment. External plugins whatsoever can be fully replaced by custom plugins and are easy to replicate or modify. All custom plugins are external.
+Plugins are building blocks that extend the form functionality. @ekisa/forms come with built-in plugins that are useful for different purposes and make the integration process seamlessly. There are two types of plugins: internal and external. Internal plugins will run inside the codebase and cannot be modified, although they could be rewritten as custom plugins but would probably need more logic on the implementation side because external plugins cannot listen for events that occur inside the form class. All internal plugins must be passed to the class constructor at the instantiation moment. External plugins whatsoever can be fully replaced by custom plugins and are easy to replicate or modify. All custom plugins are external.
 
 ### **AutoMapper (external)**
 
@@ -459,10 +459,10 @@ const mappingProfile: AutoMapperPluginConfig<MyQuestionType> = {
 };
 ```
 
-**3. Create an instance of the AutoMapperPlugin and pass in your questions and the mapping profile**
+**3. Create an instance of the AutoMapperPlugin, pass in your questions, and the mapping profile. Lastly, run the plugin to get the generated data source**
 
 ```ts
-const mapper = new AutoMapperPlugin<MyQuestionType>(questions, this._formsService.mappingProfile);
+const mapper = new AutoMapperPlugin<MyQuestionType>(questions, mappingProfile);
 const dataSource = mapper.run();
 ```
 
@@ -486,7 +486,7 @@ A flexible plugin that allows you to easily attach events to a form control
 const eventsPlugin = new EventsPlugin();
 ```
 
-**2. Run your custom logic**
+**2. Attach the event to any control by key**
 
 ```ts
 eventsPlugin.run({
@@ -510,7 +510,7 @@ eventsPlugin.run({
 
 ### **Validations (internal)**
 
-This plugin will run inside the form and will be smart enough to detect when the form is invalid and change the `data-status` attribute depending on the form status. It will also append the validations messages automatically on each control wrapper.
+This plugin will run inside the form to detect when it is invalid and change the `data-status` attribute depending on the validity status. It will also append the validation messages automatically in each control wrapper.
 
 #### Usage
 
