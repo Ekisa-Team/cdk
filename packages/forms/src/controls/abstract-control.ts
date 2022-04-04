@@ -56,8 +56,18 @@ export abstract class AbstractControl {
   }
 
   getValue(): any | null {
-    const element = document.querySelector(`#${this.key}`);
+    const element = this.getElement();
+
     if (!element) return null;
+
     return (element as any)?.value.trim() || null;
+  }
+
+  setValue(value: any): void {
+    const element = this.getElement() as any;
+
+    if (!element) return;
+
+    element.value = value;
   }
 }

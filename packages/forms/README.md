@@ -19,6 +19,7 @@
   - [DatePicker](#datepicker)
   - [TimePicker](#timepicker)
 - [API options](#api-options)
+  - [Get control](#get-control)
   - [Render](#render)
   - [Reset](#reset)
   - [Validate](#validate)
@@ -200,6 +201,10 @@ form.render();
 | pattern      | pattern: RegExp   | ValidatorFn      |
 
 ## **API options**
+
+### Get control
+
+Get control by key identifier
 
 ### Render
 

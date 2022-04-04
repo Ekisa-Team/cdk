@@ -33,7 +33,13 @@ export class NumberBox extends AbstractControl {
   }
 
   override getValue(): number | null {
-    const node = document.querySelector(`#${this.key}`) as HTMLInputElement | null;
+    const node = this.getElement() as HTMLInputElement | null;
     return node?.valueAsNumber || null;
+  }
+
+  override setValue(value: number): void {
+    const node = this.getElement() as HTMLInputElement | null;
+    if (!node) return;
+    node.valueAsNumber = value;
   }
 }
