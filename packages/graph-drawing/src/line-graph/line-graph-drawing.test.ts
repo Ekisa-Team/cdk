@@ -30,7 +30,9 @@ describe('LineGraphDrawing', () => {
 
   describe('redraw', () => {
     it('should connect two subsequent nodes with one line', () => {
-      const graph = new LineGraphDrawing().mountScopedFrame({ image: { src: '' } });
+      const graph = new LineGraphDrawing({ canDrawLines: true }).mountScopedFrame({
+        image: { src: '' },
+      });
 
       const coordinates = [
         { x: 94, y: 165, order: 0 },
@@ -44,7 +46,9 @@ describe('LineGraphDrawing', () => {
     });
 
     it('should connect three subsequent nodes with two lines', () => {
-      const graph = new LineGraphDrawing().mountScopedFrame({ image: { src: '' } });
+      const graph = new LineGraphDrawing({ canDrawLines: true }).mountScopedFrame({
+        image: { src: '' },
+      });
 
       const coordinates = [
         { x: 94, y: 165, order: 0 },
@@ -59,7 +63,9 @@ describe('LineGraphDrawing', () => {
     });
 
     it('should connect six subsequent nodes with five lines', () => {
-      const graph = new LineGraphDrawing().mountScopedFrame({ image: { src: '' } });
+      const graph = new LineGraphDrawing({ canDrawLines: true }).mountScopedFrame({
+        image: { src: '' },
+      });
 
       const coordinates = [
         { x: 94, y: 165, order: 0 },

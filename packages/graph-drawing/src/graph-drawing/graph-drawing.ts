@@ -1,5 +1,5 @@
-import { Cursor } from '../shared/cursor.type';
-import { NodeCoordinate } from '../shared/node-coordinate.type';
+import { Cursor } from '../types/cursor.type';
+import { NodeCoordinate } from '../types/node-coordinate.type';
 import { GraphDrawingBehavior } from './graph-drawing-behavior';
 import { DEFAULT_GRAPH_DRAWING_CONFIG, GraphDrawingConfig } from './graph-drawing.config';
 
@@ -86,6 +86,9 @@ export abstract class GraphDrawing extends GraphDrawingBehavior {
   }) {
     if (!this.containerElement) throw new Error('The scoped frame is not properly configured');
 
+    const config = this.getCurrentConfig();
+    if (!config.canDrawLines) return;
+
     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     line.setAttribute('x1', args.x1);
     line.setAttribute('y1', args.y1);
@@ -149,11 +152,11 @@ export abstract class GraphDrawing extends GraphDrawingBehavior {
     }));
   }
 
-  enableLinesDrawing(): void {
+  enableDrawingLines(): void {
     this.config.canDrawLines = true;
   }
 
-  disableLinesDrawing(): void {
+  disableDrawingLines(): void {
     this.config.canDrawLines = false;
   }
 

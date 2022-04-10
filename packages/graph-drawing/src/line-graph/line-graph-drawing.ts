@@ -9,14 +9,21 @@ export class LineGraphDrawing extends GraphDrawing {
     super(config);
   }
 
-  override mountScopedFrame({
-    image,
-    style,
-  }: {
+  override mountScopedFrame(config: {
     image: {
       src: string;
       alt?: string;
       objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
+    };
+    svg?: {
+      backgroundColor?: string;
+      opacity?: number;
+      width?: string;
+      heigth?: string;
+      top?: string;
+      left?: string;
+      bottom?: string;
+      right?: string;
     };
     style?: { width?: string; heigth?: string };
   }): LineGraphDrawing {
@@ -24,27 +31,38 @@ export class LineGraphDrawing extends GraphDrawing {
     const wrapper = document.createElement('div');
     wrapper.style.position = 'relative';
     wrapper.style.display = 'inline-block';
-    wrapper.style.width = style?.width ?? '100%';
-    wrapper.style.height = style?.heigth ?? '100%';
+    wrapper.style.width = config.style?.width ?? '100%';
+    wrapper.style.height = config.style?.heigth ?? '100%';
 
     // Create image element
     const imgClone = document.createElement('img');
-    imgClone.src = image.src;
-    imgClone.alt = image.alt ?? '';
+    imgClone.src = config.image.src;
+    imgClone.alt = config.image.alt ?? '';
     imgClone.style.display = 'block';
     imgClone.style.width = '100%';
     imgClone.style.height = '100%';
-    imgClone.style.objectFit = image.objectFit ?? 'fill';
+    imgClone.style.objectFit = config.image.objectFit ?? 'fill';
     wrapper.append(imgClone);
 
     // Create SVG element
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.style.position = 'absolute';
-    svg.style.width = '100%';
-    svg.style.height = '100%';
-    svg.style.top = '0';
-    svg.style.left = '0';
+    svg.style.width = config.svg?.width || '100%';
+    svg.style.height = config.svg?.heigth || '100%';
+    svg.style.top = config.svg?.top || '0';
+    svg.style.left = config.svg?.left || '0';
+    svg.style.bottom = config.svg?.bottom || '0';
+    svg.style.right = config.svg?.right || '0';
     svg.innerHTML = 'Sorry, your browser does not support inline SVG.';
+
+    if (config.svg?.backgroundColor) {
+      svg.style.backgroundColor = config.svg.backgroundColor;
+    }
+
+    if (config.svg?.opacity) {
+      svg.style.opacity = config.svg.opacity.toString();
+    }
+
     wrapper.append(svg);
 
     this.wrapperElement = wrapper;
@@ -52,14 +70,14 @@ export class LineGraphDrawing extends GraphDrawing {
   }
 
   override startProcess(): LineGraphDrawing {
-    const element = this.getContainerElement()!;
+    const element = this.getContainerElement();
 
     if (!element) throw new Error('The scoped frame is not properly configured');
 
-    element.addEventListener('click', ({ clientX, clientY }) => {
-      const config = this.getCurrentConfig();
+    const svgElement = element.querySelector('svg');
 
-      if (!config.canDrawLines) return;
+    svgElement?.addEventListener('click', ({ clientX, clientY }) => {
+      const config = this.getCurrentConfig();
 
       // Get coordinates
       const dim = element.getBoundingClientRect()!;

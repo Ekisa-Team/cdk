@@ -1,20 +1,20 @@
 {
   "name": "@ekisa-cdk/graph-drawing",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "📈 Dynamically draw graphs on SVG elements",
   "license": "MIT",
-  "types": "dist/src/lib/index.d.ts",
+  "main": "dist/index.mjs",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "main": "./dist/graph-drawing.umd.js",
-  "module": "./dist/graph-drawing.es.js",
-  "exports": {
-    ".": {
-      "import": "./dist/graph-drawing.es.js",
-      "require": "./dist/graph-drawing.umd.js"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Ekisa-Team/cdk/tree/main/packages/graph-drawing"
@@ -30,11 +30,8 @@
     "Drawing"
   ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "vite": "^2.8.0"
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "release": "pnpm publish --access public"
   }
 }

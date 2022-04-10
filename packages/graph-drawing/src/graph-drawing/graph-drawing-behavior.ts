@@ -1,4 +1,4 @@
-import { NodeCoordinate } from '../shared/node-coordinate.type';
+import { NodeCoordinate } from '../types/node-coordinate.type';
 import { GraphDrawingConfig } from './graph-drawing.config';
 
 export abstract class GraphDrawingBehavior {
@@ -30,12 +30,12 @@ export abstract class GraphDrawingBehavior {
   /**
    * Allow users to draw lines and connect nodes
    */
-  abstract enableLinesDrawing(): void;
+  abstract enableDrawingLines(): void;
 
   /**
    * Prevent users from drawing lines and connecting nodes
    */
-  abstract disableLinesDrawing(): void;
+  abstract disableDrawingLines(): void;
 
   /**
    * Allow users to remove nodes
