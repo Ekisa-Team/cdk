@@ -1,0 +1,38 @@
+{
+  "name": "@ekisa-cdk/who-graphs",
+  "version": "0.0.0",
+  "description": "📈 OMS growing graphs for children growth standards",
+  "license": "MIT",
+  "main": "dist/index.mjs",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ekisa-Team/cdk/tree/main/packages/who-graphs"
+  },
+  "bugs": {
+    "url": "https://github.com/Ekisa-Team/cdk/issues"
+  },
+  "homepage": "https://github.com/Ekisa-Team/cdk/tree/main/packages/who-graphs",
+  "keywords": [
+    "Ekisa",
+    "Ekisa cdk",
+    "Draw",
+    "Drawing",
+    "WHO",
+    "OMS"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup"
+  }
+}

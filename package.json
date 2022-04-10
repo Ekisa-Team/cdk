@@ -10,10 +10,10 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "npm run dev --workspace",
+    "dev:examples:angular": "npm run start --workspace examples/angular",
     "build": "npm run build --workspace",
     "preview": "npm run preview --workspace",
     "release": "npm run release --workspace",
-    "dev:angular": "npm run start --workspace examples/angular",
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint . --ext .ts --fix",
@@ -38,6 +38,7 @@
     "lint-staged": "^12.3.5",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
+    "tsup": "^5.12.4",
     "typescript": "^4.6.3",
     "unbuild": "^0.7.2",
     "vitest": "^0.8.3"
