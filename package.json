@@ -12,12 +12,10 @@
     "dev": "npm run dev --workspace",
     "dev:examples:angular": "npm run start --workspace examples/angular",
     "build": "npm run build --workspace",
-    "preview": "npm run preview --workspace",
     "release": "npm run release --workspace",
     "test": "vitest",
     "test:run": "vitest run",
-    "lint": "eslint . --ext .ts --fix",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint . --ext .ts --fix"
   },
   "lint-staged": {
     "*.ts": "eslint . --ext .ts"
