@@ -76,13 +76,14 @@ export class LineGraphDrawing extends GraphDrawing {
 
     const svgElement = element.querySelector('svg');
 
-    svgElement?.addEventListener('click', ({ clientX, clientY }) => {
+    svgElement?.addEventListener('click', (event) => {
+      event.stopPropagation();
       const config = this.getCurrentConfig();
 
       // Get coordinates
-      const dim = element.getBoundingClientRect()!;
-      const x = clientX - dim.left;
-      const y = clientY - dim.top;
+      const dim = svgElement.getBoundingClientRect()!;
+      const x = event.clientX - dim.left;
+      const y = event.clientY - dim.top;
 
       // Draw node on SVG
       this.node = {
