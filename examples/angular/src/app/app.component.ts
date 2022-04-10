@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
     <!--The content below is only a placeholder and can be replaced.-->
     <nav>
       <div class="container">
-        <a [routerLink]="['forms']">Graphs</a>
+        <a [routerLink]="['who-graphs']">Graphs</a>
         <a [routerLink]="['forms']">Forms</a>
       </div>
     </nav>

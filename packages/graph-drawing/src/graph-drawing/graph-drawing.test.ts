@@ -64,13 +64,13 @@ describe('GraphDrawing', () => {
 
   it('should enable lines drawing capability', () => {
     const graph = new MockGraphDrawing().mountScopedFrame();
-    graph.enableLinesDrawing();
+    graph.enableDrawingLines();
     expect(graph.getCurrentConfig().canDrawLines).toBeTruthy();
   });
 
   it('should disable lines drawing capability', () => {
     const graph = new MockGraphDrawing().mountScopedFrame();
-    graph.disableLinesDrawing();
+    graph.disableDrawingLines();
     expect(graph.getCurrentConfig().canDrawLines).toBeFalsy();
   });
 

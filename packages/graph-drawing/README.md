@@ -34,7 +34,7 @@ const graph = new LineGraphDrawing({
 })
   .mountScopedFrame({
     image: {
-      src: 'https://d20khd7ddkh5ls.cloudfront.net/point_2.jpg',
+      src: 'some-image.jpg',
       alt: 'lorem ipsum',
       objectFit: 'fill',
     },
@@ -54,6 +54,16 @@ const graph = new LineGraphDrawing({
     src: string;
     alt?: string;
     objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
+  },
+  svg?: {
+    backgroundColor?: string;
+    opacity?: number;
+    width?: string;
+    heigth?: string;
+    top?: string;
+    left?: string;
+    bottom?: string;
+    right?: string;
   },
   style?: {
     width?: string;
@@ -95,13 +105,13 @@ graph.redraw();
 ### **Enable lines drawing**
 
 ```ts
-graph.enableLinesDrawing();
+graph.enableDrawingLines();
 ```
 
 ### **Disable lines drawing**
 
 ```ts
-graph.disableLinesDrawing();
+graph.disableDrawingLines();
 ```
 
 ### **Enable nodes removal**

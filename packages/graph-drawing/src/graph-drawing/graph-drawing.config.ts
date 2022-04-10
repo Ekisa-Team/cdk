@@ -1,4 +1,4 @@
-import { Cursor } from '../shared/cursor.type';
+import { Cursor } from '../types/cursor.type';
 
 export type GraphDrawingConfig = {
   // Behavior config
