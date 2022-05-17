@@ -1,5 +1,6 @@
 import { GraphDrawing } from '../graph-drawing/graph-drawing';
 import { GraphDrawingConfig } from '../graph-drawing/graph-drawing.config';
+import { Cursor } from '../types/cursor.type';
 
 /**
  * Logic implementation for lines drawing on SVG frames
@@ -9,13 +10,13 @@ export class LineGraphDrawing extends GraphDrawing {
     super(config);
   }
 
-  override mountScopedFrame(config: {
+  mountScopedFrame(config: {
     image: {
       src: string;
       alt?: string;
       objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
     };
-    svg?: {
+    frame?: {
       backgroundColor?: string;
       opacity?: number;
       width?: string;
@@ -24,6 +25,7 @@ export class LineGraphDrawing extends GraphDrawing {
       left?: string;
       bottom?: string;
       right?: string;
+      cursor?: Cursor;
     };
     style?: { width?: string; heigth?: string };
   }): LineGraphDrawing {
@@ -47,20 +49,21 @@ export class LineGraphDrawing extends GraphDrawing {
     // Create SVG element
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.style.position = 'absolute';
-    svg.style.width = config.svg?.width || '100%';
-    svg.style.height = config.svg?.heigth || '100%';
-    svg.style.top = config.svg?.top || '0';
-    svg.style.left = config.svg?.left || '0';
-    svg.style.bottom = config.svg?.bottom || '0';
-    svg.style.right = config.svg?.right || '0';
+    svg.style.width = config.frame?.width || '100%';
+    svg.style.height = config.frame?.heigth || '100%';
+    svg.style.top = config.frame?.top || '0';
+    svg.style.left = config.frame?.left || '0';
+    svg.style.bottom = config.frame?.bottom || '0';
+    svg.style.right = config.frame?.right || '0';
+    svg.style.cursor = config.frame?.cursor?.toString() || 'default';
     svg.innerHTML = 'Sorry, your browser does not support inline SVG.';
 
-    if (config.svg?.backgroundColor) {
-      svg.style.backgroundColor = config.svg.backgroundColor;
+    if (config.frame?.backgroundColor) {
+      svg.style.backgroundColor = config.frame.backgroundColor;
     }
 
-    if (config.svg?.opacity) {
-      svg.style.opacity = config.svg.opacity.toString();
+    if (config.frame?.opacity) {
+      svg.style.opacity = config.frame.opacity.toString();
     }
 
     wrapper.append(svg);
@@ -69,7 +72,7 @@ export class LineGraphDrawing extends GraphDrawing {
     return this;
   }
 
-  override startProcess(): LineGraphDrawing {
+  startProcess(): LineGraphDrawing {
     const element = this.getContainerElement();
 
     if (!element) throw new Error('The scoped frame is not properly configured');
@@ -95,7 +98,6 @@ export class LineGraphDrawing extends GraphDrawing {
         hoverSizeMultiplier: config.styles!.node!.hoverSizeMultiplier!,
         transition: config.styles!.node!.transition!,
         cursor: config.styles!.node!.cursor!,
-        hoverCursor: config.styles!.node!.hoverCursor!,
       };
 
       // Connect circles with lines
@@ -105,7 +107,7 @@ export class LineGraphDrawing extends GraphDrawing {
     return this;
   }
 
-  override redraw(): void {
+  redraw(): void {
     const nodes = this.nodes;
     const lines = this.lines;
 

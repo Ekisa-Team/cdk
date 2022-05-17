@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <nav>
       <div class="container">
         <a [routerLink]="['who-graphs']">Graphs</a>
-        <a [routerLink]="['forms']">Forms</a>
+        <a [routerLink]="['forms', 'activity']">Forms</a>
       </div>
     </nav>
 

@@ -9,6 +9,8 @@ import { LineGraphDrawing } from '@ekisa-cdk/graph-drawing';
     <button (click)="clearNodes()">Clear nodes</button>
     <button (click)="loadCoordinates()">Load coordinates</button>
     <button (click)="getCoordinates()">Get coordinates</button>
+    <button (click)="getCoordinates()">Export as .JPG</button>
+    <button (click)="getCoordinates()">Export as .PNG</button>
   `,
   styleUrls: ['./head-circumference.component.css'],
 })
@@ -49,22 +51,51 @@ export class HeadCircumferenceComponent implements AfterViewInit {
     this._graphApi.loadCoordinates(coordinates);
   }
 
+  // const tomato = {
+  //   tomato1: '#fffcfc',
+  //   tomato2: '#fff8f7',
+  //   tomato3: '#fff0ee',
+  //   tomato4: '#ffe6e2',
+  //   tomato5: '#fdd8d3',
+  //   tomato6: '#fac7be',
+  //   tomato7: '#f3b0a2',
+  //   tomato8: '#ea9280',
+  //   tomato9: '#e54d2e',
+  //   tomato10: '#db4324',
+  //   tomato11: '#ca3214',
+  //   tomato12: '#341711',
+  // }
+
   private _renderGraph() {
     this._graphApi = new LineGraphDrawing({
-      canDrawLines: false,
+      canDrawLines: true,
       canRemoveNodes: true,
+      styles: {
+        line: {
+          color: '#ca3214',
+          width: 3,
+        },
+        node: {
+          width: 5,
+          color: '#00259e',
+          hoverColor: '#ca3214',
+          hoverSizeMultiplier: 2,
+          cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+        },
+      },
     })
       .mountScopedFrame({
         image: {
           src: 'https://media.cheggcdn.com/media/3bc/3bc5fc99-47c7-44a9-aadb-1f778be80537/phpCYM9Kd.png',
-          alt: 'Head circumference for age chart',
+          alt: 'Head circumference-for-age GIRLS',
           objectFit: 'fill',
         },
-        svg: {
+        frame: {
           width: '962px',
           heigth: '589px',
           top: '115px',
           left: '104px',
+          cursor: 'default',
         },
         style: {
           width: '1200px',

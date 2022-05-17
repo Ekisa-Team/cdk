@@ -14,7 +14,6 @@ export type GraphDrawingConfig = {
       width?: number;
       transition?: string;
       cursor?: Cursor;
-      hoverCursor?: Cursor;
     };
     line?: {
       color?: string;
@@ -33,8 +32,7 @@ export const DEFAULT_GRAPH_DRAWING_CONFIG: GraphDrawingConfig = {
       hoverSizeMultiplier: 2,
       width: 6,
       transition: 'all ease-out 200ms',
-      cursor: 'default',
-      hoverCursor: 'pointer',
+      cursor: 'pointer',
     },
     line: {
       color: '#fde047',

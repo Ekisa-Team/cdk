@@ -1,4 +1,4 @@
-export type Cursor =
+export type SystemCursor =
   | 'auto'
   | 'default'
   | 'none'
@@ -31,3 +31,7 @@ export type Cursor =
   | 'sw-resize'
   | 'nesw-resize'
   | 'nwse-resize';
+
+export type CustomCursor = string;
+
+export type Cursor = SystemCursor | Omit<string, CustomCursor>;
