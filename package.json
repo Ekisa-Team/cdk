@@ -8,10 +8,12 @@
     "examples/*"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install && npm run build:all:packages",
     "dev": "npm run dev --workspace",
     "dev:examples:angular": "npm run start --workspace examples/angular",
     "build": "npm run build --workspace",
+    "build:all:packages": "npm run build --workspace packages",
+    "build:all:examples": "npm run build --workspace examples",
     "release": "npm run release --workspace",
     "test": "vitest",
     "test:run": "vitest run",
