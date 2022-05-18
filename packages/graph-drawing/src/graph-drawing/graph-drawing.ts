@@ -1,3 +1,4 @@
+import html2canvas, { Options as Html2CanvasOptions } from 'html2canvas';
 import { Cursor } from '../types/cursor.type';
 import { NodeCoordinate } from '../types/node-coordinate.type';
 import { DEFAULT_GRAPH_DRAWING_CONFIG, GraphDrawingConfig } from './graph-drawing.config';
@@ -12,7 +13,7 @@ export abstract class GraphDrawing {
   // Config attributes
   private config: GraphDrawingConfig;
 
-  // Getters & Setters
+  // Accesors
   protected set wrapperElement(element: HTMLDivElement) {
     this.containerElement = element;
   }
@@ -157,6 +158,28 @@ export abstract class GraphDrawing {
       });
 
     this.redraw();
+  }
+
+  /**
+   * Export frame as the specified mime type
+   * @param mimeType file media identifier
+   * @param options export options
+   * @returns file encoded in base64
+   */
+  async exportAs(
+    mimeType: 'image/jpeg' | 'image/png',
+    options?: Partial<Html2CanvasOptions>,
+  ): Promise<string> {
+    // Validates container
+    if (!this.containerElement) {
+      throw new Error(
+        `Error exporting frame as ${mimeType}: the container element couldn't be found.`,
+      );
+    }
+
+    // Generates canvas
+    const canvas = await html2canvas(this.containerElement, options);
+    return canvas.toDataURL(mimeType, 1);
   }
 
   /**

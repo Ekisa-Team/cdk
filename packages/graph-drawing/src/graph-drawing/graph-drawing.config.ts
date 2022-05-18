@@ -6,20 +6,20 @@ export type GraphDrawingConfig = {
   canRemoveNodes?: boolean;
 
   // Styles config
-  styles?: {
-    node?: {
-      color?: string;
-      hoverColor?: string;
-      hoverSizeMultiplier?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-      width?: number;
-      transition?: string;
-      cursor?: Cursor;
-    };
-    line?: {
-      color?: string;
-      width?: number;
-    };
-  };
+  styles?: Partial<{
+    node: Partial<{
+      color: string;
+      hoverColor: string;
+      hoverSizeMultiplier: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+      width: number;
+      transition: string;
+      cursor: Cursor;
+    }>;
+    line: Partial<{
+      color: string;
+      width: number;
+    }>;
+  }>;
 };
 
 export const DEFAULT_GRAPH_DRAWING_CONFIG: GraphDrawingConfig = {

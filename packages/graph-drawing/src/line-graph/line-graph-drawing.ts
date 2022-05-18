@@ -6,6 +6,8 @@ import { Cursor } from '../types/cursor.type';
  * Logic implementation for lines drawing on SVG frames
  */
 export class LineGraphDrawing extends GraphDrawing {
+  isHttpImageUrl!: boolean;
+
   constructor(config?: GraphDrawingConfig) {
     super(config);
   }
@@ -16,25 +18,37 @@ export class LineGraphDrawing extends GraphDrawing {
       alt?: string;
       objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
     };
-    frame?: {
-      backgroundColor?: string;
-      opacity?: number;
-      width?: string;
-      heigth?: string;
-      top?: string;
-      left?: string;
-      bottom?: string;
-      right?: string;
-      cursor?: Cursor;
+    container?: {
+      boundaries?: Array<
+        Partial<{
+          width: string;
+          height: string;
+          inset: string;
+          backgroundColor?: string;
+          opacity?: number;
+          cursor?: Cursor;
+        }>
+      >;
+      styles?: Partial<{
+        width: string;
+        heigth: string;
+      }>;
     };
-    style?: { width?: string; heigth?: string };
+    frame?: {
+      styles?: {
+        backgroundColor?: string;
+        opacity?: number;
+        cursor?: Cursor;
+      };
+    };
   }): LineGraphDrawing {
     // Create wrapper element
     const wrapper = document.createElement('div');
     wrapper.style.position = 'relative';
     wrapper.style.display = 'inline-block';
-    wrapper.style.width = config.style?.width ?? '100%';
-    wrapper.style.height = config.style?.heigth ?? '100%';
+    wrapper.style.width = config?.container?.styles?.width ?? '100%';
+    wrapper.style.height = config?.container?.styles?.heigth ?? '100%';
+    wrapper.style.userSelect = 'none';
 
     // Create image element
     const imgClone = document.createElement('img');
@@ -49,24 +63,36 @@ export class LineGraphDrawing extends GraphDrawing {
     // Create SVG element
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.style.position = 'absolute';
-    svg.style.width = config.frame?.width || '100%';
-    svg.style.height = config.frame?.heigth || '100%';
-    svg.style.top = config.frame?.top || '0';
-    svg.style.left = config.frame?.left || '0';
-    svg.style.bottom = config.frame?.bottom || '0';
-    svg.style.right = config.frame?.right || '0';
-    svg.style.cursor = config.frame?.cursor?.toString() || 'default';
+    svg.style.width = '100%';
+    svg.style.height = '100%';
+    svg.style.inset = '0';
     svg.innerHTML = 'Sorry, your browser does not support inline SVG.';
-
-    if (config.frame?.backgroundColor) {
-      svg.style.backgroundColor = config.frame.backgroundColor;
+    if (config.frame?.styles?.cursor) {
+      svg.style.cursor = config.frame.styles.cursor.toString();
     }
-
-    if (config.frame?.opacity) {
-      svg.style.opacity = config.frame.opacity.toString();
+    if (config.frame?.styles?.backgroundColor) {
+      svg.style.backgroundColor = config.frame.styles.backgroundColor;
+    }
+    if (config.frame?.styles?.opacity) {
+      svg.style.opacity = config.frame.styles.opacity.toString();
     }
 
     wrapper.append(svg);
+
+    // Setup boundaries
+    if (config.container?.boundaries) {
+      for (const boundarie of config.container.boundaries) {
+        const bElement = document.createElement('div');
+        bElement.style.position = 'absolute';
+        bElement.style.width = boundarie.width || '';
+        bElement.style.height = boundarie.height || '';
+        bElement.style.inset = boundarie.inset || '';
+        bElement.style.backgroundColor = boundarie.backgroundColor || 'transparent';
+        bElement.style.opacity = boundarie.opacity?.toString() || '0';
+        bElement.style.cursor = boundarie.cursor?.toString() || '';
+        wrapper.append(bElement);
+      }
+    }
 
     this.wrapperElement = wrapper;
     return this;
@@ -85,13 +111,11 @@ export class LineGraphDrawing extends GraphDrawing {
 
       // Get coordinates
       const dim = svgElement.getBoundingClientRect()!;
-      const x = event.clientX - dim.left;
-      const y = event.clientY - dim.top;
 
       // Draw node on SVG
       this.node = {
-        cx: x.toString(),
-        cy: y.toString(),
+        cx: (event.clientX - dim.x).toString(),
+        cy: (event.clientY - dim.y).toString(),
         width: config.styles!.node!.width!,
         color: config.styles!.node!.color!.toString(),
         hoverColor: config.styles!.node!.hoverColor!.toString(),
@@ -121,25 +145,25 @@ export class LineGraphDrawing extends GraphDrawing {
       const current = nodes[i];
       const next = nodes[i + 1];
 
-      if (!next) return;
+      if (next) {
+        // Get coordinates for two subsequent nodes
+        const currentCx = current.getAttribute('cx')!;
+        const currentCy = current.getAttribute('cy')!;
+        const nextCx = next.getAttribute('cx')!;
+        const nextCy = next.getAttribute('cy')!;
 
-      // Get coordinates for two subsequent nodes
-      const currentCx = current.getAttribute('cx')!;
-      const currentCy = current.getAttribute('cy')!;
-      const nextCx = next.getAttribute('cx')!;
-      const nextCy = next.getAttribute('cy')!;
+        // Draw line between two subsequent nodes
+        const config = this.getCurrentConfig();
 
-      // Draw line between two subsequent nodes
-      const config = this.getCurrentConfig();
-
-      this.line = {
-        x1: currentCx,
-        y1: currentCy,
-        x2: nextCx,
-        y2: nextCy,
-        color: config.styles!.line!.color!,
-        width: config.styles!.line!.width!,
-      };
+        this.line = {
+          x1: currentCx,
+          y1: currentCy,
+          x2: nextCx,
+          y2: nextCy,
+          color: config.styles!.line!.color!,
+          width: config.styles!.line!.width!,
+        };
+      }
     }
   }
 }

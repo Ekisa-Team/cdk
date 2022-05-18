@@ -34,13 +34,50 @@ const graph = new LineGraphDrawing({
 })
   .mountScopedFrame({
     image: {
-      src: 'some-image.jpg',
-      alt: 'lorem ipsum',
+      src: 'some-image.png',
+      alt: 'Some description',
       objectFit: 'fill',
     },
-    style: {
-      width: '600px',
-      heigth: '400px',
+    container: {
+      boundaries: [
+        // top
+        {
+          width: '100%',
+          height: '116px',
+          inset: '0',
+          cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+        },
+        // right
+        {
+          width: '114px',
+          height: '100%',
+          inset: '0 0 0 auto',
+          cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+        },
+        // bottom
+        {
+          width: '100%',
+          height: '98px',
+          inset: 'auto auto 0 auto',
+          cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+        },
+        // left
+        {
+          width: '88px',
+          height: '100%',
+          inset: '0 auto 0 0',
+          cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+        },
+      ],
+      styles: {
+        width: '1000px',
+        heigth: '800px',
+      },
+    },
+    frame: {
+      styles: {
+        cursor: 'crosshair',
+      },
     },
   })
   .startProcess();
@@ -54,20 +91,29 @@ const graph = new LineGraphDrawing({
     src: string;
     alt?: string;
     objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
-  },
-  svg?: {
-    backgroundColor?: string;
-    opacity?: number;
-    width?: string;
-    heigth?: string;
-    top?: string;
-    left?: string;
-    bottom?: string;
-    right?: string;
-  },
-  style?: {
-    width?: string;
-    heigth?: string
+  };
+  container?: {
+    boundaries?: Array<
+      Partial<{
+        width: string;
+        height: string;
+        inset: string;
+        backgroundColor?: string;
+        opacity?: number;
+        cursor?: Cursor;
+      }>
+    >;
+    styles?: Partial<{
+      width: string;
+      heigth: string;
+    }>;
+  };
+  frame?: {
+    styles?: {
+      backgroundColor?: string;
+      opacity?: number;
+      cursor?: Cursor;
+    };
   };
 }
 ```
@@ -100,6 +146,13 @@ graph.loadCoordinates([
 
 ```ts
 graph.redraw();
+```
+
+### **Export graph**
+
+```ts
+graph.exportAs('image/jpeg');
+graph.exportAs('image/png');
 ```
 
 ### **Enable lines drawing**

@@ -4,109 +4,133 @@ import { LineGraphDrawing } from '@ekisa-cdk/graph-drawing';
 @Component({
   selector: 'app-head-circumference',
   template: `
-    <div #graphContainer></div>
-
     <button (click)="clearNodes()">Clear nodes</button>
     <button (click)="loadCoordinates()">Load coordinates</button>
     <button (click)="getCoordinates()">Get coordinates</button>
-    <button (click)="getCoordinates()">Export as .JPG</button>
-    <button (click)="getCoordinates()">Export as .PNG</button>
+    <button (click)="exportAsJpeg()">Export as .JPG</button>
+    <button (click)="exportAsPng()">Export as .PNG</button>
+
+    <div #graphContainer style="overflow-x: scroll"></div>
+    <img #exportedGraph alt="Exported graph" />
   `,
   styleUrls: ['./head-circumference.component.css'],
 })
 export class HeadCircumferenceComponent implements AfterViewInit {
   @ViewChild('graphContainer') graphContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('exportedGraph') exportedGraph!: ElementRef<HTMLImageElement>;
 
-  private _graphApi!: LineGraphDrawing;
-
-  private _initialized = false;
+  private _graph!: LineGraphDrawing;
 
   ngAfterViewInit(): void {
     this._renderGraph();
   }
 
   clearNodes() {
-    if (this._initialized) {
-      this._graphApi.getNodes()?.forEach((node) => {
-        node.remove();
-        this._graphApi.redraw();
-      });
-    }
+    this._graph.getNodes()?.forEach((node) => {
+      node.remove();
+      this._graph.redraw();
+    });
   }
 
   getCoordinates() {
-    const coordinates = this._graphApi.getCoordinates();
+    const coordinates = this._graph.getCoordinates();
     console.log(coordinates);
     alert('Check the console');
   }
 
   loadCoordinates() {
     const coordinates = [
-      { x: 172, y: 366, order: 2 },
-      { x: 291, y: 31, order: 3 },
-      { x: 426, y: 364, order: 4 },
-      { x: 99, y: 156, order: 5 },
+      { x: 338, y: 280, order: 0 },
+      { x: 665, y: 279, order: 1 },
+      { x: 340, y: 492, order: 2 },
+      { x: 488, y: 139, order: 3 },
+      { x: 645, y: 492, order: 4 },
+      { x: 327, y: 278, order: 5 },
     ];
 
-    this._graphApi.loadCoordinates(coordinates);
+    this._graph.loadCoordinates(coordinates);
   }
 
-  // const tomato = {
-  //   tomato1: '#fffcfc',
-  //   tomato2: '#fff8f7',
-  //   tomato3: '#fff0ee',
-  //   tomato4: '#ffe6e2',
-  //   tomato5: '#fdd8d3',
-  //   tomato6: '#fac7be',
-  //   tomato7: '#f3b0a2',
-  //   tomato8: '#ea9280',
-  //   tomato9: '#e54d2e',
-  //   tomato10: '#db4324',
-  //   tomato11: '#ca3214',
-  //   tomato12: '#341711',
-  // }
+  async exportAsJpeg() {
+    const base64 = await this._graph.exportAs('image/jpeg', { scale: 1.2 });
+    this.exportedGraph.nativeElement.src = base64;
+    console.log(base64);
+  }
+
+  async exportAsPng() {
+    const base64 = await this._graph.exportAs('image/png');
+    this.exportedGraph.nativeElement.src = base64;
+    console.log(base64);
+  }
 
   private _renderGraph() {
-    this._graphApi = new LineGraphDrawing({
+    this._graph = new LineGraphDrawing({
       canDrawLines: true,
       canRemoveNodes: true,
       styles: {
         line: {
           color: '#ca3214',
-          width: 3,
+          width: 4,
         },
         node: {
-          width: 5,
+          width: 6,
           color: '#00259e',
           hoverColor: '#ca3214',
           hoverSizeMultiplier: 2,
-          cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
         },
       },
     })
       .mountScopedFrame({
         image: {
-          src: 'https://media.cheggcdn.com/media/3bc/3bc5fc99-47c7-44a9-aadb-1f778be80537/phpCYM9Kd.png',
+          src: 'assets/images/girls-head-circumference-for-age.png',
           alt: 'Head circumference-for-age GIRLS',
           objectFit: 'fill',
         },
-        frame: {
-          width: '962px',
-          heigth: '589px',
-          top: '115px',
-          left: '104px',
-          cursor: 'default',
+        container: {
+          boundaries: [
+            // top
+            {
+              width: '100%',
+              height: '116px',
+              inset: '0',
+              cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+            },
+            // right
+            {
+              width: '114px',
+              height: '100%',
+              inset: '0 0 0 auto',
+              cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+            },
+            // bottom
+            {
+              width: '100%',
+              height: '98px',
+              inset: 'auto auto 0 auto',
+              cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+            },
+            // left
+            {
+              width: '88px',
+              height: '100%',
+              inset: '0 auto 0 0',
+              cursor: 'url("https://i.stack.imgur.com/bUGV0.png"), auto',
+            },
+          ],
+          styles: {
+            width: '1000px',
+            heigth: '800px',
+          },
         },
-        style: {
-          width: '1200px',
-          heigth: '800px',
+        frame: {
+          styles: {
+            cursor: 'crosshair',
+          },
         },
       })
       .startProcess();
 
-    const container = this._graphApi.getContainerElement();
-    this._initialized = true;
-
+    const container = this._graph.getContainerElement();
     container && this.graphContainer.nativeElement.append(container);
   }
 }

@@ -33,5 +33,8 @@
     "dev": "tsup --watch",
     "build": "tsup",
     "release": "pnpm publish --access public"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1"
   }
 }
