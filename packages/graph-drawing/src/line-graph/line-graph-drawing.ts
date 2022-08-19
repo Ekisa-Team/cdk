@@ -114,8 +114,9 @@ export class LineGraphDrawing extends GraphDrawing {
 
       // Draw node on SVG
       this.node = {
-        cx: (event.clientX - dim.x).toString(),
-        cy: (event.clientY - dim.y).toString(),
+        x: event.clientX - dim.x,
+        y: event.clientY - dim.y,
+        shape: config.styles!.node!.shape!,
         width: config.styles!.node!.width!,
         color: config.styles!.node!.color!.toString(),
         hoverColor: config.styles!.node!.hoverColor!.toString(),
@@ -147,10 +148,10 @@ export class LineGraphDrawing extends GraphDrawing {
 
       if (next) {
         // Get coordinates for two subsequent nodes
-        const currentCx = current.getAttribute('cx')!;
-        const currentCy = current.getAttribute('cy')!;
-        const nextCx = next.getAttribute('cx')!;
-        const nextCy = next.getAttribute('cy')!;
+        const currentCx = current.dataset.coordX!;
+        const currentCy = current.dataset.coordY!;
+        const nextCx = next.dataset.coordX!;
+        const nextCy = next.dataset.coordY!;
 
         // Draw line between two subsequent nodes
         const config = this.getCurrentConfig();

@@ -1,25 +1,28 @@
 import { Cursor } from '../types/cursor.type';
 
+export type GraphDrawingStyles = {
+  node: Partial<{
+    shape: 'circle' | 'pathX';
+    color: string;
+    hoverColor: string;
+    hoverSizeMultiplier: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+    width: number;
+    transition: string;
+    cursor: Cursor;
+  }>;
+  line: Partial<{
+    color: string;
+    width: number;
+  }>;
+};
+
 export type GraphDrawingConfig = {
   // Behavior config
   canDrawLines?: boolean;
   canRemoveNodes?: boolean;
 
   // Styles config
-  styles?: Partial<{
-    node: Partial<{
-      color: string;
-      hoverColor: string;
-      hoverSizeMultiplier: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-      width: number;
-      transition: string;
-      cursor: Cursor;
-    }>;
-    line: Partial<{
-      color: string;
-      width: number;
-    }>;
-  }>;
+  styles?: Partial<GraphDrawingStyles>;
 };
 
 export const DEFAULT_GRAPH_DRAWING_CONFIG: GraphDrawingConfig = {
@@ -27,6 +30,7 @@ export const DEFAULT_GRAPH_DRAWING_CONFIG: GraphDrawingConfig = {
   canRemoveNodes: false,
   styles: {
     node: {
+      shape: 'circle',
       color: '#1d4ed8',
       hoverColor: '#e11d48',
       hoverSizeMultiplier: 2,

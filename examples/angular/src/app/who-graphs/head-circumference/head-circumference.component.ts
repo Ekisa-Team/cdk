@@ -73,6 +73,7 @@ export class HeadCircumferenceComponent implements AfterViewInit {
           width: 4,
         },
         node: {
+          shape: 'pathX',
           width: 6,
           color: '#00259e',
           hoverColor: '#ca3214',

@@ -1,7 +1,10 @@
 import html2canvas, { Options as Html2CanvasOptions } from 'html2canvas';
-import { Cursor } from '../types/cursor.type';
 import { NodeCoordinate } from '../types/node-coordinate.type';
-import { DEFAULT_GRAPH_DRAWING_CONFIG, GraphDrawingConfig } from './graph-drawing.config';
+import {
+  DEFAULT_GRAPH_DRAWING_CONFIG,
+  GraphDrawingConfig,
+  GraphDrawingStyles,
+} from './graph-drawing.config';
 
 /**
  * Define primitive behavior for SVG graph drawing
@@ -18,55 +21,22 @@ export abstract class GraphDrawing {
     this.containerElement = element;
   }
 
-  protected get nodes(): NodeListOf<SVGCircleElement> | undefined {
-    return this.containerElement?.querySelectorAll('svg circle');
+  protected get nodes(): NodeListOf<SVGElement | SVGCircleElement> | undefined {
+    return this.containerElement?.querySelectorAll('[data-type="node"]');
   }
 
-  protected set node(args: {
-    cx: string;
-    cy: string;
-    width: number;
-    color: string;
-    hoverColor: string;
-    hoverSizeMultiplier: number;
-    transition: string;
-    cursor: Cursor;
-  }) {
+  protected set node(args: { x: number; y: number } & Required<GraphDrawingStyles['node']>) {
     if (!this.containerElement) throw new Error('The scoped frame is not properly configured');
 
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('cx', args.cx);
-    circle.setAttribute('cy', args.cy);
-    circle.setAttribute('r', args.width.toString());
-    circle.setAttribute('fill', args.color);
-    circle.style.transition = args.transition;
-    circle.style.cursor = args.cursor.toString();
+    switch (args.shape) {
+      case 'circle':
+        this.containerElement.querySelector('svg')?.append(this.getCircleContext(args));
+        break;
 
-    // Add circle events
-    circle.addEventListener('mouseenter', () => {
-      if (this.config.canRemoveNodes) {
-        circle.setAttribute('fill', args.hoverColor);
-        circle.setAttribute('r', (args.width * args.hoverSizeMultiplier).toString());
-      }
-    });
-
-    circle.addEventListener('mouseleave', () => {
-      if (this.config.canRemoveNodes) {
-        circle.setAttribute('fill', args.color);
-        circle.setAttribute('r', args.width.toString());
-      }
-    });
-
-    circle.addEventListener('click', (event) => {
-      event.stopPropagation();
-
-      if (this.config.canRemoveNodes) {
-        circle.remove();
-        this.redraw();
-      }
-    });
-
-    this.containerElement.querySelector('svg')?.append(circle);
+      case 'pathX':
+        this.containerElement.querySelector('svg')?.append(this.getPathXContext(args));
+        break;
+    }
   }
 
   protected get lines(): NodeListOf<SVGLineElement> | undefined {
@@ -119,7 +89,7 @@ export abstract class GraphDrawing {
   /**
    * Returns list of nodes
    */
-  getNodes(): NodeListOf<SVGCircleElement> | undefined {
+  getNodes(): NodeListOf<SVGElement | SVGCircleElement> | undefined {
     return this.nodes;
   }
 
@@ -146,8 +116,9 @@ export abstract class GraphDrawing {
       .sort((a, b) => a.order - b.order)
       .forEach((c) => {
         this.node = {
-          cx: c.x.toString(),
-          cy: c.y.toString(),
+          x: c.x,
+          y: c.y,
+          shape: 'circle',
           width: this.config.styles!.node!.width!,
           color: this.config.styles!.node!.color!.toString(),
           hoverColor: this.config.styles!.node!.hoverColor!.toString(),
@@ -252,4 +223,94 @@ export abstract class GraphDrawing {
    * Traverse nodes and connect them
    */
   abstract redraw(): void;
+
+  private getCircleContext(
+    args: { x: number; y: number } & Required<GraphDrawingStyles['node']>,
+  ): SVGCircleElement {
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.dataset.type = 'node';
+    circle.dataset.kind = 'circle';
+    circle.dataset.coordX = args.x.toString();
+    circle.dataset.coordY = args.y.toString();
+    circle.setAttribute('cx', args.x.toString());
+    circle.setAttribute('cy', args.y.toString());
+    circle.setAttribute('r', args.width.toString());
+    circle.setAttribute('fill', args.color);
+    circle.style.transition = args.transition;
+    circle.style.cursor = args.cursor.toString();
+
+    // Add circle events
+    circle.addEventListener('mouseenter', () => {
+      if (this.config.canRemoveNodes) {
+        circle.setAttribute('fill', args.hoverColor);
+        circle.setAttribute('r', (args.width * args.hoverSizeMultiplier).toString());
+      }
+    });
+
+    circle.addEventListener('mouseleave', () => {
+      if (this.config.canRemoveNodes) {
+        circle.setAttribute('fill', args.color);
+        circle.setAttribute('r', args.width.toString());
+      }
+    });
+
+    circle.addEventListener('click', (event) => {
+      event.stopPropagation();
+
+      if (this.config.canRemoveNodes) {
+        circle.remove();
+        this.redraw();
+      }
+    });
+
+    return circle;
+  }
+
+  private getPathXContext(
+    args: { x: number; y: number } & Required<GraphDrawingStyles['node']>,
+  ): SVGElement {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.dataset.type = 'node';
+    svg.dataset.kind = 'path';
+    svg.dataset.coordX = args.x.toString();
+    svg.dataset.coordY = args.y.toString();
+    svg.setAttribute('x', (args.x - 18).toString());
+    svg.setAttribute('y', (args.y - 18).toString());
+    svg.style.width = '32px';
+    svg.style.height = '32px';
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute(
+      'd',
+      'm19.41 18l8.29-8.29a1 1 0 0 0-1.41-1.41L18 16.59l-8.29-8.3a1 1 0 0 0-1.42 1.42l8.3 8.29l-8.3 8.29A1 1 0 1 0 9.7 27.7l8.3-8.29l8.29 8.29a1 1 0 0 0 1.41-1.41Z',
+    );
+    path.setAttribute('fill', args.color);
+    path.style.transition = args.transition;
+    path.style.cursor = args.cursor.toString();
+
+    // Add circle events
+    svg.addEventListener('mouseenter', () => {
+      if (this.config.canRemoveNodes) {
+        path.setAttribute('fill', args.hoverColor);
+      }
+    });
+
+    svg.addEventListener('mouseleave', () => {
+      if (this.config.canRemoveNodes) {
+        path.setAttribute('fill', args.color);
+      }
+    });
+
+    svg.addEventListener('click', (event) => {
+      event.stopPropagation();
+
+      if (this.config.canRemoveNodes) {
+        svg.remove();
+        this.redraw();
+      }
+    });
+
+    svg.append(path);
+    return svg;
+  }
 }

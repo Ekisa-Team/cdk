@@ -1,6 +1,6 @@
 {
   "name": "@ekisa-cdk/graph-drawing",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "📈 Dynamically draw graphs on SVG elements",
   "license": "MIT",
   "main": "dist/index.mjs",
